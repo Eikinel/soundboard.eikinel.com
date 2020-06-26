@@ -28,7 +28,7 @@
       "app",
       "kebab-case"
     ],
-    "eofline": true,
+    "eofline": false,
     "import-blacklist": [
       true,
       "rxjs/Rx"
@@ -77,7 +77,7 @@
       "as-needed"
     ],
     "quotemark": [
-      true,
+      false,
       "single"
     ],
     "semicolon": {
@@ -125,6 +125,7 @@
     },
     "whitespace": {
       "options": [
+        "check-module",
         "check-branch",
         "check-decl",
         "check-operator",
