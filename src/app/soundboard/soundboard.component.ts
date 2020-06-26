@@ -3,21 +3,19 @@ import { Buttons } from "../models/buttons.model";
 import buttonsList from "src/assets/buttons.json";
 
 @Component({
+    selector: 'app-soundboard',
     templateUrl: './soundboard.component.html',
     styleUrls: ['./soundboard.component.scss']
 })
-export class SoundboardComponent implements OnInit {
+export class SoundboardComponent {
     public buttons: Buttons[] = buttonsList;
     public audioByButtonId: { [buttonId: number]: HTMLAudioElement } = {};
     public pushedButtons: { [index: number]: boolean } = {};
-    public useCache: boolean = true;
-
-    public ngOnInit(): void {
-        console.log(this.buttons);
-    }
 
     public playAudio(buttonId: number, filename: string): void {
-        if (!this.audioByButtonId[buttonId] || !this.useCache) {
+        const useAudioCache: boolean = Boolean(JSON.parse(localStorage.getItem('useAudioCache') || 'true'));
+
+        if (!this.audioByButtonId[buttonId] || !useAudioCache) {
             console.log(`Created audio for file ${filename}`);
             this.audioByButtonId[buttonId] = new Audio(`assets/sounds/${filename}`);
             this.audioByButtonId[buttonId].load();

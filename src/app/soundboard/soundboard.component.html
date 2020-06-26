@@ -1,15 +1,19 @@
 <div id="soundboard-container" class="w-100 h-100 text-white">
-    <div *ngFor="let button of this.buttons; let i = index"
-         class="button-container d-flex flex-column align-items-center justify-content-center">
-        <div class="my-4" [ngStyle]="{ 'width': '94px', 'height': '89px' }">
-            <div class="button-color position-absolute"
-                 [style.background-color]="button.color"></div>
-            <div class="position-absolute"
-                 [ngClass]="['button-' + i, this.pushedButtons[i] ? 'pressed' : 'normal']"
-                 (mousedown)="this.pushedButtons[i] = true; this.playAudio(i, button.filename)"
-                 (mouseup)="this.pushedButtons[i] = false"></div>
+    <app-soundboard-toolbar></app-soundboard-toolbar>
+
+    <div class="buttons-container d-flex justify-content-center align-items-center h-100">
+        <div *ngFor="let button of this.buttons; let i = index"
+             class="button-container d-flex flex-column align-items-center justify-content-center">
+            <div class="my-4" [ngStyle]="{ 'width': '94px', 'height': '89px' }">
+                <div class="button-color position-absolute"
+                     [style.background-color]="button.color"></div>
+                <div class="position-absolute"
+                     [ngClass]="['button-' + i, this.pushedButtons[i] ? 'pressed' : 'normal']"
+                     (mousedown)="this.pushedButtons[i] = true; this.playAudio(i, button.filename)"
+                     (mouseup)="this.pushedButtons[i] = false"></div>
+            </div>
+            <h3>{{ button.name }}</h3>
+            <i>{{ button.alt }}</i>
         </div>
-        <h3>{{ button.name }}</h3>
-        <i>{{ button.alt }}</i>
     </div>
 </div>

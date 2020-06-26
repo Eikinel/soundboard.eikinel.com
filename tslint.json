@@ -9,7 +9,7 @@
     },
     "array-type": false,
     "arrow-return-shorthand": true,
-    "curly": true,
+    "curly": false,
     "deprecation": {
       "severity": "warning"
     },
@@ -65,7 +65,7 @@
     ],
     "no-empty": false,
     "no-inferrable-types": [
-      true,
+      false,
       "ignore-params"
     ],
     "no-non-null-assertion": true,
@@ -119,7 +119,6 @@
     "variable-name": {
       "options": [
         "ban-keywords",
-        "check-format",
         "allow-pascal-case"
       ]
     },
