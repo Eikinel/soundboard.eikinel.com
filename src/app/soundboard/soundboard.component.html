@@ -3,11 +3,10 @@
 
     <div class="buttons-container position-relative d-flex flex-row flex-wrap
                 align-items-center justify-content-center">
-        <div *ngFor="let button of this.buttons"
-             class="button-container d-flex flex-column align-items-center justify-content-center text-center">
+        <ng-container *ngFor="let button of this.buttons">
             <app-soundboard-button [button]="button"
                                    [onClick]="this.soundboardService.playAudio.bind(soundboardService)">
             </app-soundboard-button>
-        </div>
+        </ng-container>
     </div>
 </div>

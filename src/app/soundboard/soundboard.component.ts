@@ -15,6 +15,5 @@ export class SoundboardComponent {
 
     public buttons: SoundboardButton[] = buttonsList;
 
-    constructor(public soundboardService: SoundboardService) {
-    }
+    constructor(public soundboardService: SoundboardService) {}
 }

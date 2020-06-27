@@ -6,23 +6,25 @@
   justify-content: inherit;
 }
 
-[class*=button] {
-  width: 94px;
-  height: 89px;
+#button-container {
+  [class*=button] {
+    width: 94px;
+    height: 89px;
 
-  &.normal {
-    background: url('/assets/images/transparent_button_small_normal.webp') no-repeat;
+    &.normal {
+      background: url('/assets/images/transparent_button_small_normal.webp') no-repeat;
+    }
+
+    &.pressed {
+      background: url('/assets/images/transparent_button_small_pressed.webp') no-repeat;
+    }
   }
 
-  &.pressed {
-    background: url('/assets/images/transparent_button_small_pressed.webp') no-repeat;
+  .button-color {
+    border-radius: 50%;
   }
-}
 
-.button-color {
-  border-radius: 50%;
-}
-
-.button-shadow {
-  background: url('/assets/images/transparent_button_small_shadow.webp') no-repeat;
+  .button-shadow {
+    background: url('/assets/images/transparent_button_small_shadow.webp') no-repeat;
+  }
 }
