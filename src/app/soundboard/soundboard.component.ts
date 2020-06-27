@@ -3,6 +3,7 @@ import { SoundboardButton } from "../models/buttons.model";
 import buttonsList from "src/assets/buttons.json";
 import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-toolbar.component";
 import { SoundboardService } from "./soundboard.service";
+import { take } from "rxjs/operators";
 
 @Component({
     selector: 'app-soundboard',
@@ -15,5 +16,9 @@ export class SoundboardComponent {
 
     public buttons: SoundboardButton[] = buttonsList;
 
-    constructor(public soundboardService: SoundboardService) {}
+    constructor(public soundboardService: SoundboardService) {
+        this.soundboardService.sayHello()
+            .pipe(take(1))
+            .subscribe((hello: string) => console.log(hello));
+    }
 }

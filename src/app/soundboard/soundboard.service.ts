@@ -1,8 +1,22 @@
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { map, take } from "rxjs/operators";
 
 @Injectable()
 export class SoundboardService {
     public audioByButtonFilename: { [filename: string]: HTMLAudioElement } = {};
+
+    constructor(private http: HttpClient) {
+    }
+
+    public sayHello(): Observable<string> {
+        return this.http.get('/api/hello')
+            .pipe(
+                take(1),
+                map((hello: string) => hello)
+            );
+    }
 
     public playAudio(filename: string): void {
         const useAudioCache: boolean = Boolean(JSON.parse(
