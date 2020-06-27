@@ -8,14 +8,13 @@ import { Tool } from "../../models/tool.model";
 })
 export class SoundboardToolbarComponent implements OnInit {
     public tools: { [toolKey: string]: Tool } = {};
-
-    private _useAudioCacheKey: string = 'useAudioCache';
+    public useAudioCacheKey: string = 'useAudioCache';
 
     public ngOnInit(): void {
-        const useAudioCache: boolean = Boolean(JSON.parse(localStorage.getItem(this._useAudioCacheKey) || 'true'));
+        const useAudioCache: boolean = Boolean(JSON.parse(localStorage.getItem(this.useAudioCacheKey) || 'true'));
 
         this.tools = {
-            [this._useAudioCacheKey]: {
+            [this.useAudioCacheKey]: {
                 label: `Click to play audio ${useAudioCache ? 'multiple times' : 'once' }`,
                 onClick: () => this._toggleUseCache()
             }
@@ -32,9 +31,9 @@ export class SoundboardToolbarComponent implements OnInit {
     }
 
     private _toggleUseCache(): void {
-        const useAudioCache: boolean = !Boolean(JSON.parse(localStorage.getItem(this._useAudioCacheKey) || 'false'));
+        const useAudioCache: boolean = !Boolean(JSON.parse(localStorage.getItem(this.useAudioCacheKey) || 'false'));
 
-        localStorage.setItem(this._useAudioCacheKey, useAudioCache.toString());
-        this.getToolByToolKey(this._useAudioCacheKey).label = `Click to play audio ${useAudioCache ? 'multiple times' : 'once' }`;
+        localStorage.setItem(this.useAudioCacheKey, useAudioCache.toString());
+        this.getToolByToolKey(this.useAudioCacheKey).label = `Click to play audio ${useAudioCache ? 'multiple times' : 'once' }`;
     }
 }

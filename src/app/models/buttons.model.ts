@@ -1,4 +1,4 @@
-export interface Buttons {
+export interface SoundboardButton {
     name: string;
     alt?: string;
     filename: string;

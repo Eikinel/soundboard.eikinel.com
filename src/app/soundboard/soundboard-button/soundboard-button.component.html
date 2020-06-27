@@ -1,0 +1,11 @@
+<div class="my-4" [ngStyle]="{ 'width': '94px', 'height': '89px' }">
+    <div class="button-color position-absolute"
+         [style.background-color]="button.color"></div>
+    <div class="position-absolute"
+         [ngClass]="['button', isPressed ? 'pressed' : 'normal']"
+         (mousedown)="this.isPressed = true; this.onClick(button.filename)"
+         (mouseup)="this.isPressed = false"
+         (mouseleave)="this.isPressed = false"></div>
+</div>
+<h3>{{ button.name }}</h3>
+<i>{{ button.alt }}</i>

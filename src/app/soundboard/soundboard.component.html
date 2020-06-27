@@ -1,20 +1,13 @@
 <div id="soundboard-container" class="w-100 h-100 text-white">
-    <app-soundboard-toolbar></app-soundboard-toolbar>
+    <app-soundboard-toolbar #soundboardToolbar></app-soundboard-toolbar>
 
-    <div class="buttons-container d-flex justify-content-center align-items-center h-100">
-        <div *ngFor="let button of this.buttons; let i = index"
+    <div class="buttons-container position-relative d-flex flex-row flex-wrap
+                align-items-center justify-content-center">
+        <div *ngFor="let button of this.buttons"
              class="button-container d-flex flex-column align-items-center justify-content-center text-center">
-            <div class="my-4" [ngStyle]="{ 'width': '94px', 'height': '89px' }">
-                <div class="button-color position-absolute"
-                     [style.background-color]="button.color"></div>
-                <div class="position-absolute"
-                     [ngClass]="['button-' + i, this.pushedButtons[i] ? 'pressed' : 'normal']"
-                     (mousedown)="this.pushedButtons[i] = true; this.playAudio(i, button.filename)"
-                     (mouseup)="this.pushedButtons[i] = false"
-                     (mouseleave)="this.pushedButtons[i] = false"></div>
-            </div>
-            <h3>{{ button.name }}</h3>
-            <i>{{ button.alt }}</i>
+            <app-soundboard-button [button]="button"
+                                   [onClick]="this.soundboardService.playAudio.bind(soundboardService)">
+            </app-soundboard-button>
         </div>
     </div>
 </div>

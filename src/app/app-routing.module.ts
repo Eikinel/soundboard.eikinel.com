@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SoundboardComponent } from "./soundboard/soundboard.component";
 import { CommonModule } from "@angular/common";
 import { SoundboardToolbarComponent } from "./soundboard/soundboard-toolbar/soundboard-toolbar.component";
+import { SoundboardButtonComponent } from "./soundboard/soundboard-button/soundboard-button.component";
+import { SoundboardService } from "./soundboard/soundboard.service";
 
 
 const routes: Routes = [
@@ -17,7 +19,11 @@ const routes: Routes = [
     exports: [RouterModule],
     declarations: [
         SoundboardComponent,
+        SoundboardButtonComponent,
         SoundboardToolbarComponent
+    ],
+    providers: [
+        SoundboardService
     ]
 })
 export class AppRoutingModule {

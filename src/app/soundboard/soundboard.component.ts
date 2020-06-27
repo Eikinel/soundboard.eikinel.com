@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { Buttons } from "../models/buttons.model";
+import { Component, ElementRef, ViewChild } from "@angular/core";
+import { SoundboardButton } from "../models/buttons.model";
 import buttonsList from "src/assets/buttons.json";
+import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-toolbar.component";
+import { SoundboardService } from "./soundboard.service";
 
 @Component({
     selector: 'app-soundboard',
@@ -8,23 +10,11 @@ import buttonsList from "src/assets/buttons.json";
     styleUrls: ['./soundboard.component.scss']
 })
 export class SoundboardComponent {
-    public buttons: Buttons[] = buttonsList;
-    public audioByButtonId: { [buttonId: number]: HTMLAudioElement } = {};
-    public pushedButtons: { [index: number]: boolean } = {};
+    @ViewChild('soundboardToolbar') soundboardToolbarComponent: SoundboardToolbarComponent;
+    @ViewChild('soundboardToolbar', { read: ElementRef }) soundboardToolbarElementRef: ElementRef<HTMLElement>;
 
-    public playAudio(buttonId: number, filename: string): void {
-        const useAudioCache: boolean = Boolean(JSON.parse(localStorage.getItem('useAudioCache') || 'true'));
+    public buttons: SoundboardButton[] = buttonsList;
 
-        if (!this.audioByButtonId[buttonId] || !useAudioCache) {
-            console.log(`Created audio for file ${filename}`);
-            this.audioByButtonId[buttonId] = new Audio(`assets/sounds/${filename}`);
-            this.audioByButtonId[buttonId].load();
-        } else {
-            console.log(`Using cached audio for file ${filename}`);
-        }
-
-        this.audioByButtonId[buttonId].play()
-            .then(() => console.log(`Played button with id ${buttonId}`))
-            .catch((error: string) => console.error(error));
+    constructor(public soundboardService: SoundboardService) {
     }
 }

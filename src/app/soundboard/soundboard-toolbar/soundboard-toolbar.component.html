@@ -1,5 +1,5 @@
 <div id="soundboard-toolbar-container"
-     class="d-flex flex-row position-absolute align-items-center px-4">
+     class="d-flex flex-row align-items-center px-4 fixed-top">
     <ng-container *ngFor="let tool of this.tools | keyvalue">
         <h6 class="tool text-center m-0 "
             (click)="tool.value.onClick(tool.value.args)">{{ tool.value.label }}</h6>
