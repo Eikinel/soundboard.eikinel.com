@@ -7,6 +7,8 @@ import { CommonModule } from "@angular/common";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { CreateButtonModalComponent } from "./create-button-modal/create-button-modal.component";
 import { ModalService } from "../services/modal.service";
+import { ReactiveFormsModule } from "@angular/forms";
+import { ComponentsModule } from "../components/components.module";
 
 @NgModule({
     declarations: [
@@ -21,7 +23,9 @@ import { ModalService } from "../services/modal.service";
     ],
     imports: [
         CommonModule,
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        ReactiveFormsModule,
+        ComponentsModule
     ]
 })
 export class SoundboardModule {

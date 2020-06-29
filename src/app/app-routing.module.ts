@@ -18,7 +18,8 @@ const routes: Routes = [
         RouterModule.forRoot(routes),
         CommonModule,
         BrowserModule,
-        HttpClientModule],
+        HttpClientModule
+    ],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

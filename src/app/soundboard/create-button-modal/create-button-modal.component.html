@@ -1,1 +1,14 @@
-<p>Create button modal works !</p>
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Create a new button</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="this.modalService.bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="this.buttonFormGroup">
+        <app-input label="Name" controlName="name"></app-input>
+        <app-input label="Description" controlName="description"></app-input>
+        <app-input label="Hexadecimal color" controlName="color"></app-input>
+        <app-input label="File" type="file" controlName="file"></app-input>
+    </form>
+</div>

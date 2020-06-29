@@ -1,9 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from "@angular/core";
+import { Component, Input, OnInit, TemplateRef } from "@angular/core";
 import { Tool } from "../../models/tool.model";
-import {SoundboardButton} from "../../models/buttons.model";
-import {SoundboardService} from "../soundboard.service";
-import {take} from "rxjs/operators";
-import {ModalService} from "../../services/modal.service";
+import { ModalService } from "../../services/modal.service";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -16,9 +13,7 @@ export class SoundboardToolbarComponent implements OnInit {
     public tools: { [toolKey: string]: Tool } = {};
     public useAudioCacheKey: string = 'useAudioCache';
 
-    constructor(
-        public soundboardService: SoundboardService,
-        public modalService: ModalService) {
+    constructor(public modalService: ModalService) {
     }
 
     public ngOnInit(): void {
@@ -31,7 +26,7 @@ export class SoundboardToolbarComponent implements OnInit {
             },
             createButton: {
                 label: `Create new button`,
-                onClick: () => this.modalService.openModal(this.createButtonTemplate)
+                onClick: () => this.modalService.openModal(this.createButtonTemplate, { class: 'modal-lg' })
             }
         };
     }
