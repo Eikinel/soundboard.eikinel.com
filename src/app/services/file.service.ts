@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { map, take } from "rxjs/operators";
 import { Observable } from "rxjs";
 
@@ -9,8 +9,10 @@ export class FileService {
     constructor(private http: HttpClient) {
     }
 
-    public uploadFile(file: File): Observable<any> {
-        return this.http.post('/file', file)
+    public uploadFile(fileFormData: FormData): Observable<any> {
+        const httpHeaders: HttpHeaders = new HttpHeaders({ "Content-Type": undefined });
+
+        return this.http.post('/file', { file: fileFormData }, { headers: httpHeaders })
             .pipe(
                 take(1),
                 map((data: any) => data)

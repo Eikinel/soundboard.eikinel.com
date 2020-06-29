@@ -36,7 +36,11 @@ export class SoundboardService {
     }
 
     public createButton(button: SoundboardButton, file: File): Observable<SoundboardButton> {
-        return this.fileService.uploadFile(file)
+        const formData: FormData = new FormData();
+
+        formData.append(file.name, file);
+
+        return this.fileService.uploadFile(formData)
             .pipe(
                 take(1),
                 switchMap((uploadedFile: UploadedFileApiResponse) => {

@@ -9,6 +9,8 @@
         <app-input label="Name" controlName="name"></app-input>
         <app-input label="Description" controlName="description"></app-input>
         <app-input label="Hexadecimal color" controlName="color"></app-input>
-        <app-input label="File" type="file" controlName="file"></app-input>
+        <app-input label="File" type="file" controlName="file" (change)="this.onFileSelect($event)"></app-input>
     </form>
+
+    <button (click)="this.createButton()">Create</button>
 </div>
