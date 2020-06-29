@@ -15,7 +15,7 @@ import { FileService } from "./services/file.service";
     imports: [
         BrowserModule,
         AppRoutingModule,
-        SoundboardModule
+        SoundboardModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },

@@ -4,16 +4,24 @@ import { SoundboardButtonComponent } from "./soundboard-button/soundboard-button
 import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-toolbar.component";
 import { SoundboardService } from "./soundboard.service";
 import { CommonModule } from "@angular/common";
+import { ModalModule } from "ngx-bootstrap/modal";
+import { CreateButtonModalComponent } from "./create-button-modal/create-button-modal.component";
+import { ModalService } from "../services/modal.service";
 
 @NgModule({
     declarations: [
         SoundboardComponent,
         SoundboardButtonComponent,
-        SoundboardToolbarComponent
+        SoundboardToolbarComponent,
+        CreateButtonModalComponent
     ],
-    providers: [SoundboardService],
+    providers: [
+        SoundboardService,
+        ModalService
+    ],
     imports: [
-        CommonModule
+        CommonModule,
+        ModalModule.forRoot()
     ]
 })
 export class SoundboardModule {

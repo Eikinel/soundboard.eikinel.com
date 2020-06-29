@@ -1,8 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from "@angular/core";
 import { Tool } from "../../models/tool.model";
 import {SoundboardButton} from "../../models/buttons.model";
 import {SoundboardService} from "../soundboard.service";
 import {take} from "rxjs/operators";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -10,10 +11,14 @@ import {take} from "rxjs/operators";
     styleUrls: ['./soundboard-toolbar.component.scss'],
 })
 export class SoundboardToolbarComponent implements OnInit {
+    @Input() createButtonTemplate: TemplateRef<any>;
+
     public tools: { [toolKey: string]: Tool } = {};
     public useAudioCacheKey: string = 'useAudioCache';
 
-    constructor(public soundboardService: SoundboardService) {
+    constructor(
+        public soundboardService: SoundboardService,
+        public modalService: ModalService) {
     }
 
     public ngOnInit(): void {
@@ -24,14 +29,10 @@ export class SoundboardToolbarComponent implements OnInit {
                 label: `Click to play audio ${useAudioCache ? 'multiple times' : 'once' }`,
                 onClick: () => this._toggleUseCache()
             },
-            // createButton: {
-            //     label: `Create new button`,
-            //     onClick: () => this.soundboardService.createButton({
-            //         name: 'owo',
-            //         description: 'uww',
-            //         color: '#987ddd'
-            //     } as SoundboardButton).pipe(take(1)).subscribe(() => {})
-            // }
+            createButton: {
+                label: `Create new button`,
+                onClick: () => this.modalService.openModal(this.createButtonTemplate)
+            }
         };
     }
 
