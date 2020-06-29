@@ -11,7 +11,7 @@ export class SoundboardService {
     }
 
     public sayHello(): Observable<string> {
-        return this.http.get('/api/hello')
+        return this.http.get('/hello')
             .pipe(
                 take(1),
                 map((hello: string) => hello)

@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SoundboardModule } from "./soundboard/soundboard.module";
+import { ApiInterceptor } from "./api.interceptor";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
 @NgModule({
     declarations: [
@@ -14,7 +16,9 @@ import { SoundboardModule } from "./soundboard/soundboard.module";
         AppRoutingModule,
         SoundboardModule
     ],
-    providers: [],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
