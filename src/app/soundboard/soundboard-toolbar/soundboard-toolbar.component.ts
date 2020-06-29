@@ -1,5 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { Tool } from "../../models/tool.model";
+import {SoundboardButton} from "../../models/buttons.model";
+import {SoundboardService} from "../soundboard.service";
+import {take} from "rxjs/operators";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -10,6 +13,9 @@ export class SoundboardToolbarComponent implements OnInit {
     public tools: { [toolKey: string]: Tool } = {};
     public useAudioCacheKey: string = 'useAudioCache';
 
+    constructor(public soundboardService: SoundboardService) {
+    }
+
     public ngOnInit(): void {
         const useAudioCache: boolean = Boolean(JSON.parse(localStorage.getItem(this.useAudioCacheKey) || 'true'));
 
@@ -17,7 +23,15 @@ export class SoundboardToolbarComponent implements OnInit {
             [this.useAudioCacheKey]: {
                 label: `Click to play audio ${useAudioCache ? 'multiple times' : 'once' }`,
                 onClick: () => this._toggleUseCache()
-            }
+            },
+            // createButton: {
+            //     label: `Create new button`,
+            //     onClick: () => this.soundboardService.createButton({
+            //         name: 'owo',
+            //         description: 'uww',
+            //         color: '#987ddd'
+            //     } as SoundboardButton).pipe(take(1)).subscribe(() => {})
+            // }
         };
     }
 

@@ -1,6 +1,5 @@
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { SoundboardButton } from "../models/buttons.model";
-import buttonsList from "src/assets/buttons.json";
 import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-toolbar.component";
 import { SoundboardService } from "./soundboard.service";
 import { take } from "rxjs/operators";
@@ -10,15 +9,18 @@ import { take } from "rxjs/operators";
     templateUrl: './soundboard.component.html',
     styleUrls: ['./soundboard.component.scss']
 })
-export class SoundboardComponent {
+export class SoundboardComponent implements OnInit {
     @ViewChild('soundboardToolbar') soundboardToolbarComponent: SoundboardToolbarComponent;
     @ViewChild('soundboardToolbar', { read: ElementRef }) soundboardToolbarElementRef: ElementRef<HTMLElement>;
 
-    public buttons: SoundboardButton[] = buttonsList;
+    public buttons: SoundboardButton[] = [];
 
     constructor(public soundboardService: SoundboardService) {
-        this.soundboardService.sayHello()
+    }
+
+    public ngOnInit(): void {
+        this.soundboardService.getAllButtons()
             .pipe(take(1))
-            .subscribe((hello: string) => console.log(hello));
+            .subscribe((buttons: SoundboardButton[]) => this.buttons = buttons);
     }
 }

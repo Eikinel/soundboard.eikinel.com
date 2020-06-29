@@ -1,37 +1,76 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { map, take } from "rxjs/operators";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { map, switchMap, take } from "rxjs/operators";
+import { SoundboardButton, UploadedFileApiResponse } from "../models/buttons.model";
+import { FileService } from "../services/file.service";
 
 @Injectable()
 export class SoundboardService {
-    public audioByButtonFilename: { [filename: string]: HTMLAudioElement } = {};
+    public audioByButtonFilename: { [filename: string]: AudioBuffer } = {};
 
-    constructor(private http: HttpClient) {
+    private _audioContext: AudioContext;
+
+    constructor(
+        private http: HttpClient,
+        private fileService: FileService) {
+        this._audioContext = new AudioContext();
     }
 
-    public sayHello(): Observable<string> {
-        return this.http.get('/hello')
+
+    // HTTP REQUESTS
+    public getAllButtons(): Observable<SoundboardButton[]> {
+        return this.http.get('/button/all')
             .pipe(
                 take(1),
-                map((hello: string) => hello)
+                map((buttons: SoundboardButton[]) => buttons)
             );
     }
 
-    public playAudio(filename: string): void {
-        const useAudioCache: boolean = Boolean(JSON.parse(
-            localStorage.getItem('useAudioCache') || 'true'));
+    public getMediaByFileName(fileName: string): Observable<ArrayBuffer> {
+        return this.fileService.downloadFileByFileName(fileName, 'response', 'arraybuffer')
+            .pipe(
+                take(1),
+                map((data: HttpResponse<ArrayBuffer>) => data.body)
+            );
+    }
 
-        if (!this.audioByButtonFilename[filename] || !useAudioCache) {
-            console.log(`Created audio for file ${filename}`);
-            this.audioByButtonFilename[filename] = new Audio(`assets/sounds/${filename}`);
-            this.audioByButtonFilename[filename].load();
+    public createButton(button: SoundboardButton, file: File): Observable<SoundboardButton> {
+        return this.fileService.uploadFile(file)
+            .pipe(
+                take(1),
+                switchMap((uploadedFile: UploadedFileApiResponse) => {
+                    button.fileName = uploadedFile.fileName;
+                    return this.http.post('/button', { button });
+                }),
+                map((createdButton: SoundboardButton) => createdButton)
+            );
+    }
+
+
+    // METHODS
+    public playAudio(filename: string): void {
+        if (!this.audioByButtonFilename[filename]) {
+            this.getMediaByFileName(filename)
+                .pipe(take(1))
+                .subscribe(async (data: ArrayBuffer) => {
+                    console.log(`Created audio for file ${filename}`);
+                    this.audioByButtonFilename[filename] = await this._audioContext.decodeAudioData(data);
+                    this._playCachedAudio(this.audioByButtonFilename[filename], filename);
+                });
         } else {
             console.log(`Using cached audio for file ${filename}`);
+            this._playCachedAudio(this.audioByButtonFilename[filename], filename);
         }
+    }
 
-        this.audioByButtonFilename[filename].play()
-            .then(() => console.log(`Played button with filename ${filename}`))
-            .catch((error: string) => console.error(error));
+    private _playCachedAudio(audioBuffer: AudioBuffer, filename: string): void {
+        const source: AudioBufferSourceNode = this._audioContext.createBufferSource();
+
+        source.buffer = audioBuffer;
+        source.connect(this._audioContext.destination);
+        source.start();
+
+        console.log(`Played button with filename ${filename}`);
     }
 }
