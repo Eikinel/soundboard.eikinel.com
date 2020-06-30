@@ -1,17 +1,17 @@
 import { NgModule } from "@angular/core";
-import { InputComponent } from "./input/input.component";
+import { SglInputComponent } from "./SGL-input/sgl-input.component";
 import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [
-        InputComponent,
+        SglInputComponent,
     ],
     imports: [
         ReactiveFormsModule
     ],
     exports: [
-        InputComponent,
+        SglInputComponent,
     ]
 })
-export class ComponentsModule {
+export class SGLModule {
 }

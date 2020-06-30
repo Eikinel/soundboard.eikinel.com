@@ -2,11 +2,11 @@ import { Component, Input } from "@angular/core";
 import { ControlContainer } from "@angular/forms";
 
 @Component({
-    selector: 'app-input',
-    templateUrl: './input.component.html',
-    styleUrls: ['./input.component.scss']
+    selector: 'app-sgl-input',
+    templateUrl: './sgl-input.component.html',
+    styleUrls: ['./sgl-input.component.scss']
 })
-export class InputComponent {
+export class SglInputComponent {
     @Input() controlName: string;
     @Input() label: string;
     @Input() type: 'text' | 'file' = 'text';

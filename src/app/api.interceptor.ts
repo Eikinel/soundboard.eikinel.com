@@ -9,7 +9,7 @@ export class ApiInterceptor implements HttpInterceptor {
             url: '/api' + req.url
         });
 
-        if (!req.headers.has('Content-Type')) {
+        if (req.headers && !req.headers.keys().includes('Content-Type')) {
             req.headers.append('Content-Type', 'application/json; charset=utf-8');
         }
 

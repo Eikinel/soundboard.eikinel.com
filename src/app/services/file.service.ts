@@ -9,10 +9,10 @@ export class FileService {
     constructor(private http: HttpClient) {
     }
 
-    public uploadFile(fileFormData: FormData): Observable<any> {
-        const httpHeaders: HttpHeaders = new HttpHeaders({ "Content-Type": undefined });
+    public uploadFile(fileFormData: FormData, headers?: HttpHeaders): Observable<any> {
+        if (!headers) headers = new HttpHeaders();
 
-        return this.http.post('/file', { file: fileFormData }, { headers: httpHeaders })
+        return this.http.post('/file', fileFormData, { headers })
             .pipe(
                 take(1),
                 map((data: any) => data)

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { HttpClient, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { map, switchMap, take } from "rxjs/operators";
 import { SoundboardButton, UploadedFileApiResponse } from "../models/buttons.model";
 import { FileService } from "../services/file.service";
@@ -38,9 +38,9 @@ export class SoundboardService {
     public createButton(button: SoundboardButton, file: File): Observable<SoundboardButton> {
         const formData: FormData = new FormData();
 
-        formData.append(file.name, file);
+        formData.append('file', file);
 
-        return this.fileService.uploadFile(formData)
+        return this.fileService.uploadFile(formData, undefined)
             .pipe(
                 take(1),
                 switchMap((uploadedFile: UploadedFileApiResponse) => {
