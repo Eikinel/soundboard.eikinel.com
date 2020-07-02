@@ -1,4 +1,4 @@
-import { Injectable, TemplateRef } from "@angular/core";
+import { Component, Injectable, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class ModalService {
     constructor(private bsModalService: BsModalService) {
     }
 
-    public openModal(template: TemplateRef<any>, config?: ModalOptions): void {
+    public openModal(template: TemplateRef<any> | any, config?: ModalOptions): void {
         this.bsModalRef = this.bsModalService.show(template, config);
     }
 }

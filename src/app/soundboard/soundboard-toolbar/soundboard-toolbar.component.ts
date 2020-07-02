@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, TemplateRef } from "@angular/core";
 import { Tool } from "../../models/tool.model";
 import { ModalService } from "../../services/modal.service";
+import { CreateButtonModalComponent } from "../create-button-modal/create-button-modal.component";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -26,7 +27,10 @@ export class SoundboardToolbarComponent implements OnInit {
             },
             createButton: {
                 label: `Create new button`,
-                onClick: () => this.modalService.openModal(this.createButtonTemplate, { class: 'modal-lg' })
+                onClick: () => this.modalService.openModal(CreateButtonModalComponent, {
+                    class: 'modal-lg',
+                    animated: true
+                })
             }
         };
     }

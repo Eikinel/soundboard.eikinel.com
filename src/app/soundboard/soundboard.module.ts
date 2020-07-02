@@ -9,6 +9,8 @@ import { CreateButtonModalComponent } from "./create-button-modal/create-button-
 import { ModalService } from "../services/modal.service";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SGLModule } from "../SGL/SGL.module";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserModule } from "@angular/platform-browser";
 
 @NgModule({
     declarations: [

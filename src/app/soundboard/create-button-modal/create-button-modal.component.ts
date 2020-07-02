@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { ModalService } from "../../services/modal.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SoundboardService } from "../soundboard.service";
-import { SoundboardButton } from "../../models/buttons.model";
+import { SoundboardButton, SoundboardButtonPayload } from "../../models/buttons.model";
 import { take } from "rxjs/operators";
 
 @Component({
@@ -11,6 +11,7 @@ import { take } from "rxjs/operators";
     styleUrls: ['./create-button-modal.component.scss']
 })
 export class CreateButtonModalComponent implements OnInit {
+    @Output() buttonCreatedEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
 
     public buttonFormGroup: FormGroup;
 
@@ -39,6 +40,9 @@ export class CreateButtonModalComponent implements OnInit {
 
         this._soundboardService.createButton(this.buttonFormGroup.value as SoundboardButton, this._fileToUpload)
             .pipe(take(1))
-            .subscribe((createdButton: SoundboardButton) => console.log(createdButton));
+            .subscribe((createdButton: SoundboardButton) => {
+                console.log(`Button ${createdButton.name} created`);
+                this.buttonCreatedEvent.emit(createdButton);
+            });
     }
 }

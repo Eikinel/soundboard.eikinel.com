@@ -40,12 +40,13 @@ export class SoundboardService {
 
         formData.append('file', file);
 
-        return this.fileService.uploadFile(formData, undefined)
+        return this.fileService.uploadFile(formData)
             .pipe(
                 take(1),
                 switchMap((uploadedFile: UploadedFileApiResponse) => {
                     button.fileName = uploadedFile.fileName;
-                    return this.http.post('/button', { button });
+                    console.log(button);
+                    return this.http.post('/button', button);
                 }),
                 map((createdButton: SoundboardButton) => createdButton)
             );
