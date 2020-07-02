@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, TemplateRef } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { Tool } from "../../models/tool.model";
 import { ModalService } from "../../services/modal.service";
 import { CreateButtonModalComponent } from "../create-button-modal/create-button-modal.component";
+import { take } from "rxjs/operators";
+import { SoundboardButton } from "../../models/buttons.model";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -9,28 +11,32 @@ import { CreateButtonModalComponent } from "../create-button-modal/create-button
     styleUrls: ['./soundboard-toolbar.component.scss'],
 })
 export class SoundboardToolbarComponent implements OnInit {
-    @Input() createButtonTemplate: TemplateRef<any>;
+    @Output() createdButtonEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
 
     public tools: { [toolKey: string]: Tool } = {};
-    public useAudioCacheKey: string = 'useAudioCache';
 
     constructor(public modalService: ModalService) {
     }
 
     public ngOnInit(): void {
-        const useAudioCache: boolean = Boolean(JSON.parse(localStorage.getItem(this.useAudioCacheKey) || 'true'));
-
         this.tools = {
-            [this.useAudioCacheKey]: {
-                label: `Click to play audio ${useAudioCache ? 'multiple times' : 'once' }`,
-                onClick: () => this._toggleUseCache()
-            },
             createButton: {
                 label: `Create new button`,
-                onClick: () => this.modalService.openModal(CreateButtonModalComponent, {
-                    class: 'modal-lg',
-                    animated: true
-                })
+                customClass: 'font-weight-bold',
+                onClick: () => {
+                    this.modalService.openModal(CreateButtonModalComponent, {
+                        class: 'modal-lg',
+                        animated: true
+                    });
+
+                    const modalContent: CreateButtonModalComponent = this.modalService.bsModalRef.content as CreateButtonModalComponent;
+
+                    modalContent.buttonCreatedEvent
+                        .pipe(take(1))
+                        .subscribe((createdButton: SoundboardButton) => {
+                            this.createdButtonEvent.emit(createdButton);
+                        });
+                }
             }
         };
     }
@@ -42,12 +48,5 @@ export class SoundboardToolbarComponent implements OnInit {
         });
 
         if (foundToolPair) return foundToolPair[1];
-    }
-
-    private _toggleUseCache(): void {
-        const useAudioCache: boolean = !Boolean(JSON.parse(localStorage.getItem(this.useAudioCacheKey) || 'false'));
-
-        localStorage.setItem(this.useAudioCacheKey, useAudioCache.toString());
-        this.getToolByToolKey(this.useAudioCacheKey).label = `Click to play audio ${useAudioCache ? 'multiple times' : 'once' }`;
     }
 }

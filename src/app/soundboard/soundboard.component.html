@@ -1,7 +1,5 @@
 <div id="soundboard-container" class="w-100 h-100 text-white">
-    <app-soundboard-toolbar #soundboardToolbar
-                            [createButtonTemplate]="createButtonTemplate">
-    </app-soundboard-toolbar>
+    <app-soundboard-toolbar (createdButtonEvent)="this.onButtonCreated($event)"></app-soundboard-toolbar>
 
     <div class="buttons-container position-relative d-flex flex-row flex-wrap
                 align-items-center justify-content-center">
@@ -12,7 +10,3 @@
         </ng-container>
     </div>
 </div>
-
-<ng-template #createButtonTemplate>
-    <app-create-button-modal></app-create-button-modal>
-</ng-template>

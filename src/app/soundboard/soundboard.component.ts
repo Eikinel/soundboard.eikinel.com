@@ -10,8 +10,6 @@ import { take } from "rxjs/operators";
     styleUrls: ['./soundboard.component.scss']
 })
 export class SoundboardComponent implements OnInit {
-    @ViewChild('soundboardToolbar') soundboardToolbarComponent: SoundboardToolbarComponent;
-    @ViewChild('soundboardToolbar', { read: ElementRef }) soundboardToolbarElementRef: ElementRef<HTMLElement>;
 
     public buttons: SoundboardButton[] = [];
 
@@ -22,5 +20,9 @@ export class SoundboardComponent implements OnInit {
         this.soundboardService.getAllButtons()
             .pipe(take(1))
             .subscribe((buttons: SoundboardButton[]) => this.buttons = buttons);
+    }
+
+    public onButtonCreated(button: SoundboardButton): void {
+        this.buttons.push(button);
     }
 }

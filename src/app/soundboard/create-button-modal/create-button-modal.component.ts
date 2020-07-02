@@ -43,6 +43,7 @@ export class CreateButtonModalComponent implements OnInit {
             .subscribe((createdButton: SoundboardButton) => {
                 console.log(`Button ${createdButton.name} created`);
                 this.buttonCreatedEvent.emit(createdButton);
+                this.modalService.bsModalRef.hide();
             });
     }
 }
