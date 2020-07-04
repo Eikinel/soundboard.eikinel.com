@@ -23,6 +23,7 @@ export class FormErrorDirective implements OnInit {
     public componentRef: ComponentRef<ControlErrorComponent>;
     public submit$: Observable<Event>;
 
+    private _element: HTMLElement;
     private _commonErrors: { [error: string]: string } = {
         required: 'This field is required',
     };
@@ -33,6 +34,7 @@ export class FormErrorDirective implements OnInit {
         private resolver: ComponentFactoryResolver,
         @Optional() @SkipSelf() private form: FormSubmitDirective) {
         this.submit$ = this.form ? this.form.submit$ : EMPTY;
+        this._element = (this.vcr.element as ElementRef<HTMLElement>).nativeElement;
     }
 
     public ngOnInit(): void {
@@ -49,7 +51,7 @@ export class FormErrorDirective implements OnInit {
                 const text = this.customErrors[error] || this._commonErrors[error];
 
                 this.setError(text);
-                (this.vcr.element as ElementRef<HTMLElement>).nativeElement.classList.add('error');
+                this._element.classList.add('error');
             });
         });
     }
@@ -61,6 +63,6 @@ export class FormErrorDirective implements OnInit {
         }
 
         this.componentRef.instance.text = text;
-        if (!text) (this.vcr.element as ElementRef<HTMLElement>).nativeElement.classList.remove('error');
+        if (!text) this._element.classList.remove('error');
     }
 }
