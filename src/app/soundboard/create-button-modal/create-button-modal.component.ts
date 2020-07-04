@@ -24,10 +24,10 @@ export class CreateButtonModalComponent implements OnInit {
 
     public ngOnInit(): void {
         this.buttonFormGroup = this._formBuilder.group({
-            name: this._formBuilder.control(null, Validators.required),
-            description: this._formBuilder.control(null, Validators.required),
-            color: this._formBuilder.control(null, Validators.required),
-            file: this._formBuilder.control(null, Validators.required)
+            name: [null, Validators.required],
+            description: [null, Validators.required],
+            color: [null, Validators.required],
+            file: [null, Validators.required]
         });
     }
 

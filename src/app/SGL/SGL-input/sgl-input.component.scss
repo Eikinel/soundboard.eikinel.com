@@ -1,9 +1,14 @@
-.input-container {
-  span {
-    flex-basis: 30%;
+input[type="text"] {
+  border-radius: 5px;
+  min-height: 2.2em;
+  border-width: 1px;
+  padding: 5px 10px;
+
+  &:focus {
+    outline: none;
   }
 
-  input {
-    flex-grow: 1;
+  &.ng-invalid.ng-dirty {
+    border: solid 2px #dc3545;
   }
 }

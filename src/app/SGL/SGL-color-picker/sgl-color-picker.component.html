@@ -1,0 +1,8 @@
+<ng-container [formGroup]="this.controlContainer.control">
+    <label class="input-container d-flex flex-column">
+        <span>{{ this.label }}</span>
+        <compact-picker [color]="'#FFF'"
+                        (colorChange)="this.setFormColorValue($event)">
+        </compact-picker>
+    </label>
+</ng-container>

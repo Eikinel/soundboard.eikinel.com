@@ -25,7 +25,7 @@ export class SoundboardToolbarComponent implements OnInit {
                 customClass: 'font-weight-bold',
                 onClick: () => {
                     this.modalService.openModal(CreateButtonModalComponent, {
-                        class: 'modal-lg',
+                        class: 'modal-md',
                         animated: true
                     });
 

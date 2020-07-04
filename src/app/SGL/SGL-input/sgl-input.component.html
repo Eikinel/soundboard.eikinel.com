@@ -1,6 +1,6 @@
-<div [formGroup]="this.controlContainer.control">
-    <label class="input-container d-flex flex-row align-items-center p-1">
-        <span class="pr-3">{{ this.label }}</span>
-        <input [type]="this.type" [formControlName]="this.controlName">
+<ng-container [formGroup]="this.controlContainer.control">
+    <label class="input-container d-flex flex-column p-1">
+        <span>{{ this.label }}</span>
+        <input class="flex-grow-1" [type]="this.type" [formControlName]="this.controlName">
     </label>
-</div>
+</ng-container>
