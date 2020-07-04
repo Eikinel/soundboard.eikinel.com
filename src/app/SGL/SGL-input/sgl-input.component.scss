@@ -1,4 +1,5 @@
 input[type="text"] {
+  width: 100%;
   border-radius: 5px;
   min-height: 2.2em;
   padding: 5px 10px;
@@ -16,4 +17,17 @@ input[type="text"] {
   &.ng-valid {
     border-color: #28a745;
   }
+}
+
+.label-file {
+  cursor: pointer;
+  background-color: #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.label-file:hover {
+  background-color: #bbb;
 }

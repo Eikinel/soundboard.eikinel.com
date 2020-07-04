@@ -9,8 +9,11 @@
         <app-sgl-input label="Name" controlName="name"></app-sgl-input>
         <app-sgl-input label="Description" controlName="description"></app-sgl-input>
         <app-sgl-color-picker label="Hexadecimal color" controlName="color"></app-sgl-color-picker>
-        <app-sgl-input label="File" type="file" controlName="file" (change)="this.onFileSelect($event)"></app-sgl-input>
+        <app-sgl-input label="File" type="file" controlName="file"
+                       (change)="this.onFileSelect($event)"
+                       [customErrors]="this.fileCustomErrors">
+        </app-sgl-input>
 
-        <button (click)="this.createButton()">Create</button>
+        <button class="mt-3 text-white w-100" (click)="this.createButton()">Create</button>
     </form>
 </div>

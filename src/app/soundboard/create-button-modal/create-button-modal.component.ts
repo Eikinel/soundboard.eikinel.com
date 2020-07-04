@@ -14,6 +14,9 @@ export class CreateButtonModalComponent implements OnInit {
     @Output() buttonCreatedEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
 
     public buttonFormGroup: FormGroup;
+    public fileCustomErrors: { [error: string]: string } = {
+        pattern: 'This file type is not accepted. The accepted ones are : .mp3, .wav, .ogg, .flac, .wma, .m4a'
+    };
 
     private _fileToUpload: File;
 
