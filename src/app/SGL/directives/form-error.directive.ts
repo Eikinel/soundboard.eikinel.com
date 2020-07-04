@@ -1,7 +1,7 @@
 import {
     ComponentFactoryResolver,
     ComponentRef,
-    Directive,
+    Directive, ElementRef,
     Host,
     Input,
     OnInit, Optional, SkipSelf,
@@ -11,6 +11,7 @@ import { NgControl, ValidationErrors } from "@angular/forms";
 import { ControlErrorComponent } from "../components/control-error.component";
 import { EMPTY, merge, Observable } from "rxjs";
 import { FormSubmitDirective } from "./form-submit.directive";
+import { CompactPickerComponent } from "@iplab/ngx-color-picker";
 
 @Directive({
     // tslint:disable-next-line:directive-selector
@@ -32,14 +33,13 @@ export class FormErrorDirective implements OnInit {
         private resolver: ComponentFactoryResolver,
         @Optional() @SkipSelf() private form: FormSubmitDirective) {
         this.submit$ = this.form ? this.form.submit$ : EMPTY;
-        console.log(this.form.element);
     }
 
     public ngOnInit(): void {
         merge(
             this.submit$,
             this.controlDir.valueChanges
-        ).subscribe((_: string) => {
+        ).subscribe((_: any) => {
             const controlErrors: ValidationErrors = this.controlDir.control.errors;
 
             if (!controlErrors) return this.setError(null);
@@ -49,6 +49,7 @@ export class FormErrorDirective implements OnInit {
                 const text = this.customErrors[error] || this._commonErrors[error];
 
                 this.setError(text);
+                (this.vcr.element as ElementRef<HTMLElement>).nativeElement.classList.add('error');
             });
         });
     }
@@ -60,5 +61,6 @@ export class FormErrorDirective implements OnInit {
         }
 
         this.componentRef.instance.text = text;
+        if (!text) (this.vcr.element as ElementRef<HTMLElement>).nativeElement.classList.remove('error');
     }
 }

@@ -1,6 +1,8 @@
 <ng-container [formGroup]="this.controlContainer.control">
     <label class="input-container d-flex flex-column p-1">
         <span>{{ this.label }}</span>
-        <input class="flex-grow-1" [type]="this.type" [formControlName]="this.controlName">
+        <input class="flex-grow-1" [type]="this.type"
+                                   [formControlName]="this.controlName"
+                                   [customErrors]="this.customErrors">
     </label>
 </ng-container>

@@ -1,14 +1,19 @@
 input[type="text"] {
   border-radius: 5px;
   min-height: 2.2em;
-  border-width: 1px;
   padding: 5px 10px;
+  outline: none;
+  border: solid 1px #c4c4c6;
 
   &:focus {
-    outline: none;
+    border: solid 2px #007bff;
   }
 
-  &.ng-invalid.ng-dirty {
-    border: solid 2px #dc3545;
+  &.error {
+    border-color: #dc3545;
+  }
+
+  &.ng-valid {
+    border-color: #28a745;
   }
 }

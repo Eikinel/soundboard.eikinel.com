@@ -1,6 +1,5 @@
-import { Component, Host, Input } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { ControlContainer } from "@angular/forms";
-import { FormSubmitDirective } from "../directives/form-submit.directive";
 
 @Component({
     selector: 'app-sgl-input',
@@ -11,6 +10,7 @@ export class SglInputComponent {
     @Input() controlName: string;
     @Input() label: string;
     @Input() type: 'text' | 'file' = 'text';
+    @Input() customErrors: object = {};
 
     constructor(public controlContainer: ControlContainer) {}
 }

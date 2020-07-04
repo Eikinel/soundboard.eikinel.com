@@ -1,6 +1,5 @@
 import { Component, Input } from "@angular/core";
 import { ControlContainer } from "@angular/forms";
-import { Color, ColorPickerControl } from "@iplab/ngx-color-picker";
 
 @Component({
     selector: 'app-sgl-color-picker',
