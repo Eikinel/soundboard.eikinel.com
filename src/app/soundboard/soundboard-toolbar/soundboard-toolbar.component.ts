@@ -32,8 +32,8 @@ export class SoundboardToolbarComponent implements OnInit {
         this.tools = [
             {
                 toolKey: 'createButton',
-                label: 'Create new button',
-                customClass: 'font-weight-bold',
+                label: '➕ Create new button',
+                customClass: 'font-weight-bold btn btn-success',
                 onClick: () => {
                     const modalRef: BsModalRef = this.modalService.openModal(CreateButtonModalComponent, {
                         class: 'modal-md',
