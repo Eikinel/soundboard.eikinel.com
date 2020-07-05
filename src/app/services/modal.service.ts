@@ -9,7 +9,7 @@ export class ModalService {
     constructor(private bsModalService: BsModalService) {
     }
 
-    public openModal(template: TemplateRef<any> | any, config?: ModalOptions): void {
-        this.bsModalRef = this.bsModalService.show(template, config);
+    public openModal(template: TemplateRef<any> | any, config?: ModalOptions): BsModalRef {
+        return this.bsModalRef = this.bsModalService.show(template, config);
     }
 }

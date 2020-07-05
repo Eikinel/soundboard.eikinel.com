@@ -1,9 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { Tool } from "../../models/tool.model";
+import { DropdownTool, Tool } from "../models/tool.model";
 import { ModalService } from "../../services/modal.service";
 import { CreateButtonModalComponent } from "../create-button-modal/create-button-modal.component";
 import { take } from "rxjs/operators";
-import { SoundboardButton } from "../../models/buttons.model";
+import { SoundboardButton } from "../models/buttons.model";
+import { BsModalRef } from "ngx-bootstrap/modal";
+import { SoundMode } from "../models/soundmode.enum";
+import { SoundboardService } from "../soundboard.service";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -13,40 +16,60 @@ import { SoundboardButton } from "../../models/buttons.model";
 export class SoundboardToolbarComponent implements OnInit {
     @Output() createdButtonEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
 
-    public tools: { [toolKey: string]: Tool } = {};
+    public tools: Tool[] = [];
+    public readonly soundModeLabels: { [soundMode: number]: string } = {
+        [SoundMode.OVERRIDE]: 'Override',
+        [SoundMode.PARALLELIZE]: 'Parallelize',
+        [SoundMode.QUEUE]: 'Queue',
+    };
 
-    constructor(public modalService: ModalService) {
+    constructor(
+        public modalService: ModalService,
+        private soundboardService: SoundboardService) {
     }
 
     public ngOnInit(): void {
-        this.tools = {
-            createButton: {
-                label: `Create new button`,
+        this.tools = [
+            {
+                toolKey: 'createButton',
+                label: 'Create new button',
                 customClass: 'font-weight-bold',
                 onClick: () => {
-                    this.modalService.openModal(CreateButtonModalComponent, {
+                    const modalRef: BsModalRef = this.modalService.openModal(CreateButtonModalComponent, {
                         class: 'modal-md',
                         animated: true
                     });
 
-                    const modalContent: CreateButtonModalComponent = this.modalService.bsModalRef.content as CreateButtonModalComponent;
-
-                    modalContent.buttonCreatedEvent
+                    (modalRef.content as CreateButtonModalComponent).buttonCreatedEvent
                         .pipe(take(1))
                         .subscribe((createdButton: SoundboardButton) => {
                             this.createdButtonEvent.emit(createdButton);
                         });
                 }
-            }
-        };
+            },
+            {
+                toolKey: 'changeSoundMode',
+                type: 'dropdown',
+                list: this._invert(this.soundModeLabels),
+                label: `Sound mode: ${this.soundModeLabels[this.soundboardService.soundMode]}`,
+                onClick: (soundMode: SoundMode) => {
+                    this.soundboardService.soundMode = soundMode;
+                    localStorage.setItem('soundMode', soundMode.toString());
+                    this.getToolByToolKey('changeSoundMode').label = `Sound mode: ${this.soundModeLabels[soundMode]}`;
+                }
+            } as DropdownTool
+        ];
     }
 
-    public getToolByToolKey(toolKeyToFind: string): Tool | undefined {
-        const foundToolPair: [string, Tool] | undefined = Object.entries(this.tools).find((value: [string, Tool]) => {
-            const [toolKey, _]: [string, Tool] = value;
-            if (toolKeyToFind === toolKey) return true;
-        });
+    private getToolByToolKey(toolKey: string): Tool {
+        return this.tools.find((tool: Tool) => tool.toolKey === toolKey);
+    }
 
-        if (foundToolPair) return foundToolPair[1];
+    private _invert(object: object): object {
+        return Object.entries(object).reduce((ret: object, entry: [string | number, any]) => {
+            const [key, value]: [string | number, any] = entry;
+            ret[value] = isNaN(key as any) ? key : Number(key);
+            return ret;
+        }, {});
     }
 }

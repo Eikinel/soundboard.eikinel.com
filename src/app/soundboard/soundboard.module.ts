@@ -9,23 +9,26 @@ import { CreateButtonModalComponent } from "./create-button-modal/create-button-
 import { ModalService } from "../services/modal.service";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SGLModule } from "../SGL/SGL.module";
+import { BsDropdownConfig, BsDropdownModule } from "ngx-bootstrap/dropdown";
 
 @NgModule({
     declarations: [
         SoundboardComponent,
         SoundboardButtonComponent,
         SoundboardToolbarComponent,
-        CreateButtonModalComponent
+        CreateButtonModalComponent,
     ],
     providers: [
         SoundboardService,
-        ModalService
+        ModalService,
+        BsDropdownConfig
     ],
     imports: [
         CommonModule,
         ModalModule.forRoot(),
         ReactiveFormsModule,
-        SGLModule
+        SGLModule,
+        BsDropdownModule
     ]
 })
 export class SoundboardModule {

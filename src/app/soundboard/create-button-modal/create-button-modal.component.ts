@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { ModalService } from "../../services/modal.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SoundboardService } from "../soundboard.service";
-import { SoundboardButton } from "../../models/buttons.model";
+import { SoundboardButton } from "../models/buttons.model";
 import { take } from "rxjs/operators";
 
 @Component({

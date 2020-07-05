@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { SoundboardButton } from "../../models/buttons.model";
+import { SoundboardButton } from "../models/buttons.model";
 
 @Component({
     selector: 'app-soundboard-button',

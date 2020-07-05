@@ -4,6 +4,10 @@
   height: 4em;
   background-color: #333;
 
+  & > *:not(:first-child) {
+    margin-left: 20px;
+  }
+
   .tool {
     cursor: pointer;
     user-select: none;

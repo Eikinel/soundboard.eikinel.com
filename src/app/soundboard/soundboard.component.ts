@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { SoundboardButton } from "../models/buttons.model";
+import { SoundboardButton } from "./models/buttons.model";
 import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-toolbar.component";
 import { SoundboardService } from "./soundboard.service";
 import { take } from "rxjs/operators";

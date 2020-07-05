@@ -12,5 +12,9 @@ form {
     &:focus {
       outline: none;
     }
+
+    &:hover {
+      background-color: #006aff;
+    }
   }
 }
