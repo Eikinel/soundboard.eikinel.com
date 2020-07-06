@@ -3,7 +3,8 @@
   overflow-x: hidden;
 
   .buttons-container {
-    height: inherit;
+    min-height: calc(100vh - 64px);
+    top: 64px;
     max-width: 100vw;
 
     .button-container {
