@@ -7,6 +7,7 @@ import { SoundboardButton } from "../models/buttons.model";
 import { BsModalRef } from "ngx-bootstrap/modal";
 import { SoundMode } from "../models/soundmode.enum";
 import { SoundboardService } from "../soundboard.service";
+import { BreakpointService } from "../../services/breakpoint.service";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -25,6 +26,7 @@ export class SoundboardToolbarComponent implements OnInit {
 
     constructor(
         public modalService: ModalService,
+        public breakpointService: BreakpointService,
         private soundboardService: SoundboardService) {
     }
 

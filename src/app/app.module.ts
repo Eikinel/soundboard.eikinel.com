@@ -7,6 +7,7 @@ import { ApiInterceptor } from "./api.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FileService } from "./services/file.service";
 import { SoundboardModule } from "./soundboard/soundboard.module";
+import { BreakpointService } from "./services/breakpoint.service";
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { SoundboardModule } from "./soundboard/soundboard.module";
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true},
         FileService,
+        BreakpointService
     ],
     bootstrap: [AppComponent]
 })

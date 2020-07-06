@@ -1,23 +1,25 @@
 <div id="soundboard-toolbar-container"
      class="d-flex flex-row align-items-center px-4 fixed-top">
-    <ng-container *ngFor="let tool of this.tools" [ngSwitch]="tool.type">
-        <div *ngSwitchCase="'dropdown'" class="btn-group" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
-                    aria-controls="dropdown-basic">
-                {{ tool.label }} <span class="caret"></span>
-            </button>
+    <ng-container *ngIf="!this.breakpointService.isWidthLessThanBreakpoint">
+        <ng-container *ngFor="let tool of this.tools" [ngSwitch]="tool.type">
+            <div *ngSwitchCase="'dropdown'" class="btn-group" dropdown>
+                <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+                        aria-controls="dropdown-basic">
+                    {{ tool.label }} <span class="caret"></span>
+                </button>
 
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-                <li *ngFor="let list of tool.list | keyvalue" role="menuitem">
-                    <a class="dropdown-item" (click)="tool.onClick(list.value)">{{ list.key }}</a>
-                </li>
-            </ul>
-        </div>
+                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                    role="menu" aria-labelledby="button-basic">
+                    <li *ngFor="let list of tool.list | keyvalue" role="menuitem">
+                        <a class="dropdown-item" (click)="tool.onClick(list.value)">{{ list.key }}</a>
+                    </li>
+                </ul>
+            </div>
 
-        <h6 *ngSwitchDefault
-            class="tool text-center my-0"
-            [ngClass]="tool.customClass"
-            (click)="tool.onClick(tool.args)">{{ tool.label }}</h6>
+            <h6 *ngSwitchDefault
+                class="tool text-center my-0"
+                [ngClass]="tool.customClass"
+                (click)="tool.onClick(tool.args)">{{ tool.label }}</h6>
+        </ng-container>
     </ng-container>
 </div>
