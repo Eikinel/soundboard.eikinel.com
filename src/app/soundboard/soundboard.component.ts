@@ -32,7 +32,6 @@ export class SoundboardComponent implements OnInit {
         const target: HTMLElement = event.target as HTMLElement;
         const forbiddenClass: string[] = ['tool', 'burger-bar', 'burger-icon-container', 'dropdown-item'];
 
-        console.log(forbiddenClass.filter((c: string) => !target.classList.contains(c)));
         if (!this.soundboardToolbar.burgerMenuCollapsed &&
             forbiddenClass.filter((c: string) => !target.classList.contains(c)).length === forbiddenClass.length) {
             this.soundboardToolbar.burgerMenuCollapsed = true;
