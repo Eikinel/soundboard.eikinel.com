@@ -10,6 +10,7 @@ import { ModalService } from "../services/modal.service";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SGLModule } from "../SGL/SGL.module";
 import { BsDropdownConfig, BsDropdownModule } from "ngx-bootstrap/dropdown";
+import { CollapseModule } from "ngx-bootstrap/collapse";
 
 @NgModule({
     declarations: [
@@ -21,14 +22,15 @@ import { BsDropdownConfig, BsDropdownModule } from "ngx-bootstrap/dropdown";
     providers: [
         SoundboardService,
         ModalService,
-        BsDropdownConfig
+        BsDropdownConfig,
     ],
     imports: [
         CommonModule,
         ModalModule.forRoot(),
         ReactiveFormsModule,
         SGLModule,
-        BsDropdownModule
+        BsDropdownModule,
+        CollapseModule,
     ]
 })
 export class SoundboardModule {

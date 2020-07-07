@@ -18,6 +18,7 @@ export class SoundboardToolbarComponent implements OnInit {
     @Output() createdButtonEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
 
     public tools: Tool[] = [];
+    public burgerMenuCollapsed: boolean = true;
     public readonly soundModeLabels: { [soundMode: number]: string } = {
         [SoundMode.OVERRIDE]: 'Override',
         [SoundMode.PARALLELIZE]: 'Parallelize',

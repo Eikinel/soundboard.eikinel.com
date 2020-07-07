@@ -1,11 +1,10 @@
-import { HostListener, Injectable, OnDestroy } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 
 @Injectable()
 export class BreakpointService implements OnDestroy {
     public get innerWidth(): number {
         return this._innerWidth;
     }
-    public isWidthLessThanBreakpoint: boolean;
     public widthBreakpoint: number = 768;
 
     private _innerWidth: number;
@@ -13,10 +12,8 @@ export class BreakpointService implements OnDestroy {
 
     constructor() {
         this._innerWidth = window.innerWidth;
-        this.isWidthLessThanBreakpoint = this.innerWidth < this.widthBreakpoint;
         this._resizeListener = (event: Event) => {
             this._innerWidth = (event.target as Window).innerWidth;
-            this.isWidthLessThanBreakpoint = this.innerWidth < this.widthBreakpoint;
         };
         window.addEventListener('resize', this._resizeListener);
     }

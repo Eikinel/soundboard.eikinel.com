@@ -1,6 +1,6 @@
 <div id="soundboard-toolbar-container"
      class="d-flex flex-row align-items-center px-4 fixed-top">
-    <ng-container *ngIf="!this.breakpointService.isWidthLessThanBreakpoint">
+    <ng-container *ngIf="this.breakpointService.innerWidth > this.breakpointService.widthBreakpoint; else burgerMenu">
         <ng-container *ngFor="let tool of this.tools" [ngSwitch]="tool.type">
             <div *ngSwitchCase="'dropdown'" class="btn-group" dropdown>
                 <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
@@ -22,4 +22,15 @@
                 (click)="tool.onClick(tool.args)">{{ tool.label }}</h6>
         </ng-container>
     </ng-container>
+
+    <ng-template #burgerMenu>
+        <button type="button" class="btn btn-primary"
+                (click)="this.burgerMenuCollapsed = !this.burgerMenuCollapsed"
+                [attr.aria-expanded]="!this.burgerMenuCollapsed"
+                aria-controls="collapseBasic">Toggle collapse
+        </button>
+        <div id="collapseBasic" [collapse]="this.burgerMenuCollapsed">
+            <div class="well well-lg card card-block card-header">Some content</div>
+        </div>
+    </ng-template>
 </div>
