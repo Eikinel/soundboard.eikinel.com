@@ -17,7 +17,7 @@
         <ng-container *ngFor="let tool of this.tools" [ngSwitch]="tool.type">
             <div *ngSwitchCase="'dropdown'" class="btn-group" dropdown [class.dropdown-item]="this.isSmallScreen">
                 <button id="button-basic" dropdownToggle type="button"
-                        class="btn btn-primary dropdown-toggle"
+                        class="tool btn btn-primary dropdown-toggle"
                         aria-controls="dropdown-basic">
                     {{ tool.label }} <span class="caret"></span>
                 </button>

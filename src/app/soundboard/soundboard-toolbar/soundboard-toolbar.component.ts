@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, HostListener, OnInit, Output } from "@angular/core";
 import { DropdownTool, Tool } from "../models/tool.model";
 import { ModalService } from "../../services/modal.service";
 import { CreateButtonModalComponent } from "../create-button-modal/create-button-modal.component";
