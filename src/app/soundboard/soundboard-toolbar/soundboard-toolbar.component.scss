@@ -4,12 +4,42 @@
   height: 4em;
   background-color: #333;
 
-  & > *:not(:first-child) {
-    margin-left: 20px;
+  #tools-container {
+    &.flex-row > *:not(:first-child) {
+      margin-left: 20px;
+    }
+    &.flex-column > *:not(:first-child) {
+      margin-top: 20px;
+    }
   }
 
   .tool {
     cursor: pointer;
     user-select: none;
+  }
+
+  .burger-icon-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    list-style: none;
+    width: 25px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+
+    &:focus {
+      border: solid 1px #fff;
+    }
+
+    .burger-bar {
+      background-color: #fff;
+      width: inherit;
+      height: 3px;
+
+      &:first-child { margin-bottom: 7px }
+      &:last-child { margin-top: 7px }
+    }
   }
 }

@@ -19,6 +19,7 @@ export class SoundboardToolbarComponent implements OnInit {
 
     public tools: Tool[] = [];
     public burgerMenuCollapsed: boolean = true;
+    public isSmallScreen: boolean = false;
     public readonly soundModeLabels: { [soundMode: number]: string } = {
         [SoundMode.OVERRIDE]: 'Override',
         [SoundMode.PARALLELIZE]: 'Parallelize',
@@ -62,6 +63,11 @@ export class SoundboardToolbarComponent implements OnInit {
                 }
             } as DropdownTool
         ];
+        this.breakpointService.innerWidth$
+            .subscribe((innerWidth: number) => {
+                this.isSmallScreen = innerWidth < this.breakpointService.widthBreakpoint;
+                if (!this.isSmallScreen) this.burgerMenuCollapsed = true;
+            });
     }
 
     private getToolByToolKey(toolKey: string): Tool {

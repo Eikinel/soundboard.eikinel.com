@@ -1,9 +1,23 @@
 <div id="soundboard-toolbar-container"
      class="d-flex flex-row align-items-center px-4 fixed-top">
-    <ng-container *ngIf="this.breakpointService.innerWidth > this.breakpointService.widthBreakpoint; else burgerMenu">
+    <ul [class.d-none]="!this.isSmallScreen"
+        (click)="this.burgerMenuCollapsed = !this.burgerMenuCollapsed"
+        class="burger-icon-container"
+        aria-controls="burger-menu-collapse">
+        <li class="burger-bar"></li>
+        <li class="burger-bar"></li>
+        <li class="burger-bar"></li>
+    </ul>
+
+    <div id="tools-container"
+         [ngClass]="!this.isSmallScreen ? 'flex-row' : 'flex-column justify-content-between'"
+         [class.d-flex]="!this.isSmallScreen || (this.isSmallScreen && !this.burgerMenuCollapsed)"
+         [collapse]="this.burgerMenuCollapsed && this.isSmallScreen"
+         [class.dropdown-menu]="!this.burgerMenuCollapsed">
         <ng-container *ngFor="let tool of this.tools" [ngSwitch]="tool.type">
-            <div *ngSwitchCase="'dropdown'" class="btn-group" dropdown>
-                <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+            <div *ngSwitchCase="'dropdown'" class="btn-group" dropdown [class.dropdown-item]="this.isSmallScreen">
+                <button id="button-basic" dropdownToggle type="button"
+                        class="btn btn-primary dropdown-toggle"
                         aria-controls="dropdown-basic">
                     {{ tool.label }} <span class="caret"></span>
                 </button>
@@ -19,18 +33,8 @@
             <h6 *ngSwitchDefault
                 class="tool text-center my-0"
                 [ngClass]="tool.customClass"
+                [class.dropdown-item]="this.isSmallScreen"
                 (click)="tool.onClick(tool.args)">{{ tool.label }}</h6>
         </ng-container>
-    </ng-container>
-
-    <ng-template #burgerMenu>
-        <button type="button" class="btn btn-primary"
-                (click)="this.burgerMenuCollapsed = !this.burgerMenuCollapsed"
-                [attr.aria-expanded]="!this.burgerMenuCollapsed"
-                aria-controls="collapseBasic">Toggle collapse
-        </button>
-        <div id="collapseBasic" [collapse]="this.burgerMenuCollapsed">
-            <div class="well well-lg card card-block card-header">Some content</div>
-        </div>
-    </ng-template>
+    </div>
 </div>

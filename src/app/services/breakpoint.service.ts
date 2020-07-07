@@ -1,19 +1,19 @@
 import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 export class BreakpointService implements OnDestroy {
-    public get innerWidth(): number {
-        return this._innerWidth;
-    }
+    public innerWidth$: BehaviorSubject<number> = new BehaviorSubject<number>(window.innerWidth);
+    public innerHeight$: BehaviorSubject<number> = new BehaviorSubject<number>(window.innerHeight);
     public widthBreakpoint: number = 768;
+    public heightBreakpoint: number;
 
-    private _innerWidth: number;
     private readonly _resizeListener: (event: Event) => void;
 
     constructor() {
-        this._innerWidth = window.innerWidth;
         this._resizeListener = (event: Event) => {
-            this._innerWidth = (event.target as Window).innerWidth;
+            this.innerWidth$.next((event.target as Window).innerWidth);
+            this.innerHeight$.next((event.target as Window).innerHeight);
         };
         window.addEventListener('resize', this._resizeListener);
     }
