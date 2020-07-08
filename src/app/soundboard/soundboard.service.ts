@@ -110,6 +110,10 @@ export class SoundboardService {
         console.log(`Playing ${playlistElement.filename}`);
 
         source.onended = () => {
+            if (this.soundMode === SoundMode.LOOP) {
+                return this._playCachedAudio(playlistElement);
+            }
+
             this._playlist = this._playlist.filter((element: PlaylistElement) => element !== playlistElement);
             if (this.soundMode === SoundMode.QUEUE && this._playlist.length > 0) {
                 this._playCachedAudio(this._playlist[0]);

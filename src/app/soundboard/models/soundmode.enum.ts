@@ -1,5 +1,6 @@
 export enum SoundMode {
     OVERRIDE,
     PARALLELIZE,
-    QUEUE
+    QUEUE,
+    LOOP
 }

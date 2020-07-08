@@ -24,6 +24,7 @@ export class SoundboardToolbarComponent implements OnInit {
         [SoundMode.OVERRIDE]: 'Override',
         [SoundMode.PARALLELIZE]: 'Parallelize',
         [SoundMode.QUEUE]: 'Queue',
+        [SoundMode.LOOP]: 'Loop'
     };
 
     constructor(
