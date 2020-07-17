@@ -11,11 +11,13 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { SGLModule } from "../SGL/SGL.module";
 import { BsDropdownConfig, BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { CollapseModule } from "ngx-bootstrap/collapse";
+import { SoundboardButtonActionsComponent } from "./soundboard-button/sounboard-button-actions/soundboard-button-actions.component";
 
 @NgModule({
     declarations: [
         SoundboardComponent,
         SoundboardButtonComponent,
+        SoundboardButtonActionsComponent,
         SoundboardToolbarComponent,
         CreateButtonModalComponent,
     ],

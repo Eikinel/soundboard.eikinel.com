@@ -94,9 +94,7 @@ export class SoundboardService {
     private _triggerPlay(playlistElement: PlaylistElement): void {
         this._playlist.push(playlistElement);
 
-        if (this.soundMode === SoundMode.QUEUE) {
-            if (this._playlist.length > 1) return;
-        }
+        if (this.soundMode === SoundMode.QUEUE && this._playlist.length > 1) return;
 
         this._playCachedAudio(playlistElement);
     }
@@ -107,8 +105,6 @@ export class SoundboardService {
         source.buffer = playlistElement.audioBuffer;
         source.connect(this._audioContext.destination);
         source.start();
-        console.log(`Playing ${playlistElement.filename}`);
-
         source.onended = () => {
             if (this.soundMode === SoundMode.LOOP) {
                 return this._playCachedAudio(playlistElement);
@@ -119,5 +115,7 @@ export class SoundboardService {
                 this._playCachedAudio(this._playlist[0]);
             }
         };
+
+        console.log(`Playing ${playlistElement.filename}`);
     }
 }
