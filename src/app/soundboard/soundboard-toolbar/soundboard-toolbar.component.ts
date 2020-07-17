@@ -42,7 +42,8 @@ export class SoundboardToolbarComponent implements OnInit {
                 onClick: () => {
                     const modalRef: BsModalRef = this.modalService.openModal(CreateButtonModalComponent, {
                         class: 'modal-md',
-                        animated: true
+                        animated: true,
+                        ignoreBackdropClick: true
                     });
 
                     (modalRef.content as CreateButtonModalComponent).buttonCreatedEvent
