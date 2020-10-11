@@ -5,7 +5,7 @@ import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-tool
 import { SoundboardService } from "./soundboard.service";
 import { CommonModule } from "@angular/common";
 import { ModalModule } from "ngx-bootstrap/modal";
-import { CreateButtonModalComponent } from "./create-button-modal/create-button-modal.component";
+import { ButtonFormModalComponent } from "./button-form-modal/button-form-modal.component";
 import { ModalService } from "../services/modal.service";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SGLModule } from "../SGL/SGL.module";
@@ -18,7 +18,7 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
         SoundboardComponent,
         SoundboardButtonComponent,
         SoundboardToolbarComponent,
-        CreateButtonModalComponent,
+        ButtonFormModalComponent,
     ],
     providers: [
         SoundboardService,

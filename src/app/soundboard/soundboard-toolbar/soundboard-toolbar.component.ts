@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from "@angular/core";
 import { DropdownTool, Tool } from "../models/tool.model";
 import { ModalService } from "../../services/modal.service";
-import { CreateButtonModalComponent } from "../create-button-modal/create-button-modal.component";
+import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
 import { take } from "rxjs/operators";
 import { SoundboardButton } from "../models/buttons.model";
 import { BsModalRef } from "ngx-bootstrap/modal";
@@ -44,9 +44,9 @@ export class SoundboardToolbarComponent implements OnInit {
                 label: `<fa-icon [icon]="${this._faPlus}"></fa-icon> Create new button`,
                 customClass: 'font-weight-bold btn btn-success',
                 onClick: () => {
-                    (this.modalService.openModal(CreateButtonModalComponent)
-                        .content as CreateButtonModalComponent)
-                        .onButtonCreated
+                    (this.modalService.openModal(ButtonFormModalComponent)
+                        .content as ButtonFormModalComponent)
+                        .onFormSubmitted
                         .pipe(take(1))
                         .subscribe((createdButton: SoundboardButton) => {
                             this.createdButtonEvent.emit(createdButton);

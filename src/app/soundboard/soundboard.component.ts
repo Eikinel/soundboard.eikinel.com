@@ -23,11 +23,22 @@ export class SoundboardComponent implements OnInit {
     }
 
     public onButtonCreated(button: SoundboardButton): void {
+        console.log(`Button "${button.name}" created`);
         this.buttons.push(button);
     }
 
-    public onButtonDeletion(id: string): void {
-        this.buttons = this.buttons.filter((button: SoundboardButton) => button.id !== id);
+    public onButtonEdited(editedButton: SoundboardButton): void {
+        console.log(`Button "${editedButton.name}" updated`);
+        this.buttons.some((button: SoundboardButton, index: number) => {
+            if (button.id === editedButton.id) {
+                this.buttons.splice(index, 1, editedButton);
+            }
+        })
+    }
+
+    public onButtonDeleted(deletedButton: SoundboardButton): void {
+        console.log(`Button "${deletedButton.name}" deleted`);
+        this.buttons = this.buttons.filter((button: SoundboardButton) => button.id !== deletedButton.id);
     }
 
     @HostListener('click', ['$event'])

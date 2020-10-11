@@ -7,7 +7,8 @@
             <app-soundboard-button
                     [button]="button"
                     [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
-                    (onButtonDeleted)="this.onButtonDeletion($event)">
+                    (onButtonEdited)="this.onButtonEdited($event)"
+                    (onButtonDeleted)="this.onButtonDeleted($event)">
             </app-soundboard-button>
         </ng-container>
     </div>

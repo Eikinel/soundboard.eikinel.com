@@ -68,8 +68,28 @@ export class SoundboardService {
             );
     }
 
-    public deleteButtonById(id: string): Observable<void> {
-        return this.http.delete(`/button?id=${id}`).pipe(take(1)) as Observable<void>;
+    public updateButton(button: SoundboardButton, file?: File): Observable<SoundboardButton> {
+        if (file) {
+            const formData: FormData = new FormData();
+
+            formData.append('file', file);
+
+            return this.fileService.uploadFile(formData)
+                .pipe(
+                    take(1),
+                    switchMap((uploadedFile: UploadedFileApiResponse) => {
+                        button.fileName = uploadedFile.fileName;
+                        return this.http.patch(`/button/${button.id}`, button);
+                    }),
+                    map((createdButton: SoundboardButton) => createdButton)
+                );
+        }
+
+        return this.http.patch(`/button/${button.id}`, button) as Observable<SoundboardButton>;
+    }
+
+    public deleteButtonById(id: string): Observable<SoundboardButton> {
+        return this.http.delete(`/button/${id}`).pipe(take(1)) as Observable<SoundboardButton>;
     }
 
 

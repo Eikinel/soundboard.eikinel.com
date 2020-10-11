@@ -9,11 +9,14 @@ export class ModalService {
     constructor(private bsModalService: BsModalService) {
     }
 
-    public openModal(template: TemplateRef<any> | any, config?: ModalOptions): BsModalRef {
-        return this.bsModalRef = this.bsModalService.show(template, config || {
+    public openModal(template: TemplateRef<any> | any, config: ModalOptions = {}): BsModalRef {
+        // Set default properties and override if passed as argument
+        Object.assign(config, {
             class: 'modal-md',
             animated: true,
             ignoreBackdropClick: true
-        });
+        }, config);
+
+        return this.bsModalRef = this.bsModalService.show(template, config);
     }
 }
