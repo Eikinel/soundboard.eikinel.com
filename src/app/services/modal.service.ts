@@ -10,6 +10,10 @@ export class ModalService {
     }
 
     public openModal(template: TemplateRef<any> | any, config?: ModalOptions): BsModalRef {
-        return this.bsModalRef = this.bsModalService.show(template, config);
+        return this.bsModalRef = this.bsModalService.show(template, config || {
+            class: 'modal-md',
+            animated: true,
+            ignoreBackdropClick: true
+        });
     }
 }

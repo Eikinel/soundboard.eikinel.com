@@ -11,7 +11,7 @@ import { take } from "rxjs/operators";
     styleUrls: ['./create-button-modal.component.scss']
 })
 export class CreateButtonModalComponent implements OnInit {
-    @Output() buttonCreatedEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
+    @Output() onButtonCreated: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
 
     public buttonFormGroup: FormGroup;
     public fileCustomErrors: { [error: string]: string } = {
@@ -27,10 +27,10 @@ export class CreateButtonModalComponent implements OnInit {
 
     public ngOnInit(): void {
         this.buttonFormGroup = this._formBuilder.group({
-            name: [null, Validators.required],
-            description: [null, Validators.required],
-            color: [null, Validators.required],
-            file: [null, Validators.required]
+            name: this._formBuilder.control(null, [Validators.required]),
+            description: this._formBuilder.control(null, [Validators.required]),
+            color: this._formBuilder.control(null, [Validators.required]),
+            file: this._formBuilder.control(null, [Validators.required]),
         });
     }
 
@@ -44,8 +44,8 @@ export class CreateButtonModalComponent implements OnInit {
         this._soundboardService.createButton(this.buttonFormGroup.value as SoundboardButton, this._fileToUpload)
             .pipe(take(1))
             .subscribe((createdButton: SoundboardButton) => {
-                console.log(`Button ${createdButton.name} created`);
-                this.buttonCreatedEvent.emit(createdButton);
+                console.log(`Button "${createdButton.name}" created`);
+                this.onButtonCreated.emit(createdButton);
                 this.modalService.bsModalRef.hide();
             });
     }

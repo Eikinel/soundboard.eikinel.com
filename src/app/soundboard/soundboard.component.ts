@@ -1,9 +1,8 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from "@angular/core";
+import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
 import { SoundboardButton } from "./models/buttons.model";
 import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-toolbar.component";
 import { SoundboardService } from "./soundboard.service";
 import { take } from "rxjs/operators";
-import { BreakpointService } from "../services/breakpoint.service";
 
 @Component({
     selector: 'app-soundboard',
@@ -25,6 +24,10 @@ export class SoundboardComponent implements OnInit {
 
     public onButtonCreated(button: SoundboardButton): void {
         this.buttons.push(button);
+    }
+
+    public onButtonDeletion(id: string): void {
+        this.buttons = this.buttons.filter((button: SoundboardButton) => button.id !== id);
     }
 
     @HostListener('click', ['$event'])

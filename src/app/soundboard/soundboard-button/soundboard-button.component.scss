@@ -7,6 +7,8 @@
 }
 
 #button-container {
+  position: relative;
+
   [class*=button] {
     width: 94px;
     height: 89px;
@@ -26,5 +28,25 @@
 
   .button-shadow {
     background: url('/assets/images/transparent_button_small_shadow.webp') no-repeat;
+  }
+
+  fa-icon {
+    align-items: center;
+    border-radius: 2em;
+    color: white;
+    display: flex;
+    height: 2em;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    width: 2em;
+  }
+
+  fa-icon:first-of-type {
+    left: 0;
+  }
+
+  fa-icon:last-of-type {
+    right: 0;
   }
 }

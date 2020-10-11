@@ -68,6 +68,10 @@ export class SoundboardService {
             );
     }
 
+    public deleteButtonById(id: string): Observable<void> {
+        return this.http.delete(`/button?id=${id}`).pipe(take(1)) as Observable<void>;
+    }
+
 
     // METHODS
     public async playAudio(filename: string): Promise<void> {
