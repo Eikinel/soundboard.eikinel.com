@@ -1,13 +1,15 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from "@angular/core";
 import { DropdownTool, Tool } from "../models/tool.model";
 import { ModalService } from "../../services/modal.service";
-import { CreateButtonModalComponent } from "../create-button-modal/create-button-modal.component";
+import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
 import { take } from "rxjs/operators";
 import { SoundboardButton } from "../models/buttons.model";
 import { BsModalRef } from "ngx-bootstrap/modal";
 import { SoundMode } from "../models/soundmode.enum";
 import { SoundboardService } from "../soundboard.service";
 import { BreakpointService } from "../../services/breakpoint.service";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -27,6 +29,8 @@ export class SoundboardToolbarComponent implements OnInit {
         [SoundMode.LOOP]: 'Loop'
     };
 
+    private _faPlus: IconDefinition = faPlus;
+
     constructor(
         public modalService: ModalService,
         public breakpointService: BreakpointService,
@@ -37,16 +41,12 @@ export class SoundboardToolbarComponent implements OnInit {
         this.tools = [
             {
                 toolKey: 'createButton',
-                label: '➕ Create new button',
+                label: `<fa-icon [icon]="${this._faPlus}"></fa-icon> Create new button`,
                 customClass: 'font-weight-bold btn btn-success',
                 onClick: () => {
-                    const modalRef: BsModalRef = this.modalService.openModal(CreateButtonModalComponent, {
-                        class: 'modal-md',
-                        animated: true,
-                        ignoreBackdropClick: true
-                    });
-
-                    (modalRef.content as CreateButtonModalComponent).buttonCreatedEvent
+                    (this.modalService.openModal(ButtonFormModalComponent)
+                        .content as ButtonFormModalComponent)
+                        .onFormSubmitted
                         .pipe(take(1))
                         .subscribe((createdButton: SoundboardButton) => {
                             this.createdButtonEvent.emit(createdButton);

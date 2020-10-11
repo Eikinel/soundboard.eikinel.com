@@ -1,11 +1,11 @@
 <div class="input-container d-flex flex-column align-items-start mb-3" [formGroup]="this.controlContainer.control">
     <label class="mb-1"
            [class.label-file]="this.type === 'file'"
-           [for]="'input-' + this.controlName">
+           [for]="this.uuid">
         {{ this.type === 'file' ? 'Select a file' : this.label }}
     </label>
     <input #input
-           [id]="'input-' + this.controlName"
+           [id]="this.uuid"
            [class.d-none]="this.type === 'file'"
            [type]="this.type"
            [formControlName]="this.controlName"

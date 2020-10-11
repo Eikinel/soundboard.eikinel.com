@@ -4,8 +4,11 @@
     <div class="buttons-container position-relative d-flex flex-row flex-wrap
                 align-items-center justify-content-center">
         <ng-container *ngFor="let button of this.buttons">
-            <app-soundboard-button [button]="button"
-                                   [onClick]="this.soundboardService.playAudio.bind(soundboardService)">
+            <app-soundboard-button
+                    [button]="button"
+                    [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
+                    (onButtonEdited)="this.onButtonEdited($event)"
+                    (onButtonDeleted)="this.onButtonDeleted($event)">
             </app-soundboard-button>
         </ng-container>
     </div>

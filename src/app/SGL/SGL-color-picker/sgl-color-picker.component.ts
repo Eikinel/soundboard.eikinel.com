@@ -3,8 +3,8 @@ import { ControlContainer } from "@angular/forms";
 
 @Component({
     selector: 'app-sgl-color-picker',
-    templateUrl: 'sgl-color-picker.component.html',
-    styleUrls: ['sgl-color-picker.component.scss', '../sgl-common.scss']
+    templateUrl: './sgl-color-picker.component.html',
+    styleUrls: ['./sgl-color-picker.component.scss', '../sgl-common.scss']
 })
 export class SglColorPickerComponent {
     @Input() controlName: string;

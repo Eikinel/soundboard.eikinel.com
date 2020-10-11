@@ -1,4 +1,5 @@
 export interface SoundboardButton {
+    id: string;
     name: string;
     description: string;
     color: string;
