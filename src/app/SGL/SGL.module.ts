@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormErrorDirective } from "./directives/form-error.directive";
 import { ControlErrorComponent } from "./components/control-error.component";
 import { FormSubmitDirective } from "./directives/form-submit.directive";
+import { SglModalComponent } from "./SGL-modal/sgl-modal.component";
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import { FormSubmitDirective } from "./directives/form-submit.directive";
         FormSubmitDirective,
         SglInputComponent,
         SglColorPickerComponent,
-        ControlErrorComponent
+        ControlErrorComponent,
+        SglModalComponent,
     ],
     imports: [
         ReactiveFormsModule,
@@ -25,7 +27,8 @@ import { FormSubmitDirective } from "./directives/form-submit.directive";
         SglInputComponent,
         SglColorPickerComponent,
         FormErrorDirective,
-        FormSubmitDirective
+        FormSubmitDirective,
+        SglModalComponent,
     ],
     entryComponents: [ControlErrorComponent]
 })

@@ -1,5 +1,6 @@
-import { Component, Input, ViewChild } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { ControlContainer } from "@angular/forms";
+import { generateUUID } from "../../utils/generate-uuid";
 
 @Component({
     selector: 'app-sgl-input',
@@ -11,6 +12,8 @@ export class SglInputComponent {
     @Input() label: string;
     @Input() type: 'text' | 'file' = 'text';
     @Input() customErrors: object = {};
+
+    public uuid: string = generateUUID();
 
     constructor(public controlContainer: ControlContainer) {}
 }

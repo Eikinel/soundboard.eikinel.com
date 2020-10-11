@@ -6,17 +6,17 @@ import { AppComponent } from './app.component';
 import { ApiInterceptor } from "./api.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FileService } from "./services/file.service";
-import { SoundboardModule } from "./soundboard/soundboard.module";
 import { BreakpointService } from "./services/breakpoint.service";
+import { SoundboardModule } from "./soundboard/soundboard.module";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @NgModule({
-    declarations: [
-        AppComponent
-    ],
+    declarations: [AppComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        SoundboardModule
+        SoundboardModule,
+        FontAwesomeModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true},

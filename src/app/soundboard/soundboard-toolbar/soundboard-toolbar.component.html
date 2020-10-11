@@ -34,7 +34,9 @@
                 class="tool text-center my-0"
                 [ngClass]="tool.customClass"
                 [class.dropdown-item]="this.isSmallScreen"
-                (click)="tool.onClick(tool.args)">{{ tool.label }}</h6>
+                (click)="tool.onClick(tool.args)"
+                [innerHTML]="tool.label">
+            </h6>
         </ng-container>
     </div>
 </div>

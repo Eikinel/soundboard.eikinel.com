@@ -2,7 +2,6 @@ import {
     ComponentFactoryResolver,
     ComponentRef,
     Directive, ElementRef,
-    Host,
     Input,
     OnInit, Optional, SkipSelf,
     ViewContainerRef
@@ -11,7 +10,6 @@ import { NgControl, ValidationErrors } from "@angular/forms";
 import { ControlErrorComponent } from "../components/control-error.component";
 import { EMPTY, merge, Observable } from "rxjs";
 import { FormSubmitDirective } from "./form-submit.directive";
-import { CompactPickerComponent } from "@iplab/ngx-color-picker";
 
 @Directive({
     // tslint:disable-next-line:directive-selector

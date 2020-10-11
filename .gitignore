@@ -1,4 +1,7 @@
 # Pckages
+.idea
+e2e
 node_modules
 package-lock.json
 *.lock
+yarn-error.log
