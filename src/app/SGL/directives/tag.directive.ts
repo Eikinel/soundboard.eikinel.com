@@ -11,7 +11,7 @@ import {
 } from "@angular/core";
 import { fromEvent, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { TagComponent } from "../components/tag.component";
+import { TagComponent } from "../components/tag/tag.component";
 
 @Directive({
     selector: '[appTag]'
@@ -38,7 +38,7 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
             ',': () => {
                 const tagContents: string[] = this.getTagsInputContent();
 
-                if (tagContents.length) {
+                if (tagContents?.length) {
                     // Waits for key code to append before creating tag
                     setTimeout(() => {
                         this.getTagsInputContent().forEach((tag: string) => this.toTagComponent(tag));
@@ -67,7 +67,9 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        this._span.classList.add('d-flex', 'align-items-center');
         this.element.appendChild(this._span);
+        this.element.setAttribute('contenteditable', 'true');
 
         fromEvent(this.element, 'keydown')
             .pipe(takeUntil(this._destroyed))
@@ -84,7 +86,7 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getTagsInputContent(): string[] {
-        return this._span.textContent?.trim().split(',').filter((s: string) => s);
+        return this._span.textContent.trim().split(',').filter((s: string) => s);
     }
 
     private toTagComponent(name: string): void {

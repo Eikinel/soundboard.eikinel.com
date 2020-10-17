@@ -3,7 +3,7 @@
     <form appFormSubmit appFormOptional [formGroup]="this.buttonFormGroup">
         <app-sgl-input label="Name" controlName="name"></app-sgl-input>
         <app-sgl-input label="Description" controlName="description"></app-sgl-input>
-        <app-sgl-tags label="Tags" hint="Separate tags with a comma" controlName="tags"></app-sgl-tags>
+        <app-sgl-tags label="Tags" hint="(Separate tags with a comma)" controlName="tags"></app-sgl-tags>
         <app-sgl-color-picker label="Hexadecimal color" controlName="color"></app-sgl-color-picker>
         <app-sgl-input label="File" type="file" controlName="file"
                        (change)="this.onFileSelect($event)"

@@ -5,6 +5,7 @@ import { SoundboardService } from "../soundboard.service";
 import { SoundboardButton, Tag } from "../models/buttons.model";
 import { take } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { TagComponent } from "../../SGL/components/tag/tag.component";
 
 @Component({
     selector: 'app-button-form-modal',
@@ -41,7 +42,7 @@ export class ButtonFormModalComponent implements OnInit {
             id: this._formBuilder.control(this.button.id),
             name: this._formBuilder.control(this.button.name, [Validators.required]),
             description: this._formBuilder.control(this.button.description, [Validators.required]),
-            tags: this._formBuilder.control(this.button.tags?.map((tag: Tag) => tag.name).join(', ')),
+            tags: this._formBuilder.array(this.button.tags?.map((tag: Tag) => tag.name)),
             color: this._formBuilder.control(this.button.color, [Validators.required]),
             file: this._formBuilder.control(null, this.isCreation ? [Validators.required] : []),
         });

@@ -11,7 +11,7 @@ import { SglModalComponent } from "./SGL-modal/sgl-modal.component";
 import { SglTagsComponent } from "./SGL-tags/sgl-tags.component";
 import { TagDirective } from "./directives/tag.directive";
 import { FormOptionalDirective } from "./directives/form-optional.directive";
-import { TagComponent } from "./components/tag.component";
+import { TagComponent } from "./components/tag/tag.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @NgModule({

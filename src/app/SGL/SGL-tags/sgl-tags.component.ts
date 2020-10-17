@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Type } from "@angular/core";
 import { SglInputBaseComponent } from "../components/sgl-input-base.component";
 import { ControlContainer } from "@angular/forms";
 
