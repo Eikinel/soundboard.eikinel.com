@@ -101,13 +101,16 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
         componentRef.location.nativeElement.setAttribute('contenteditable', 'false');
         Object.keys(styles).forEach((property: string) => element.style[property] = styles[property]);
         componentRef.instance.name = name;
-        componentRef.instance.onDelete.subscribe(() => componentRef.destroy());
+        componentRef.instance.onDelete.subscribe(() => {
+            componentRef.destroy();
+            this._componentRefs.splice(this._componentRefs.indexOf(componentRef), 1);
+        });
         this.element.insertBefore(componentRef.location.nativeElement, this._span);
         this._componentRefs.push(componentRef);
     }
 
     private fromTagComponent(): string {
-        const lastComponentRef: ComponentRef<TagComponent> = this._componentRefs.pop();
+        const lastComponentRef: ComponentRef<TagComponent> = this._componentRefs[this._componentRefs.length - 1];
         const name: string = lastComponentRef.instance.name.slice();
 
         lastComponentRef.instance.onDelete.emit();
