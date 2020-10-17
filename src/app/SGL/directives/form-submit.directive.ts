@@ -1,10 +1,8 @@
-import { Directive, ElementRef, Host, OnInit } from '@angular/core';
+import { Directive, ElementRef } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
-import { FormErrorDirective } from "./form-error.directive";
 
 @Directive({
-    // tslint:disable-next-line:directive-selector
     selector: '[appFormSubmit]'
 })
 export class FormSubmitDirective {
@@ -15,9 +13,9 @@ export class FormSubmitDirective {
             }
         }), shareReplay(1));
 
-    constructor(private _host: ElementRef<HTMLFormElement>) {}
-
-    get element(): HTMLFormElement {
+    public get element(): HTMLFormElement {
         return this._host.nativeElement;
     }
+
+    constructor(private _host: ElementRef<HTMLFormElement>) {}
 }

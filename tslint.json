@@ -133,8 +133,7 @@
         "check-type",
         "check-typecast",
         "check-type-operator",
-        "check-preblock",
-        "check-postbrace"
+        "check-preblock"
       ]
     },
     "no-conflicting-lifecycle": true,
@@ -142,7 +141,7 @@
     "no-input-rename": true,
     "no-inputs-metadata-property": true,
     "no-output-native": true,
-    "no-output-on-prefix": true,
+    "no-output-on-prefix": false,
     "no-output-rename": true,
     "no-outputs-metadata-property": true,
     "template-banana-in-box": true,

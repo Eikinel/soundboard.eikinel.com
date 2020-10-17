@@ -1,4 +1,5 @@
 import {
+    ComponentFactory,
     ComponentFactoryResolver,
     ComponentRef,
     Directive, ElementRef,
@@ -27,20 +28,20 @@ export class FormErrorDirective implements OnInit {
     };
 
     constructor(
-        private controlDir: NgControl,
-        private vcr: ViewContainerRef,
-        private resolver: ComponentFactoryResolver,
-        @Optional() @SkipSelf() private form: FormSubmitDirective) {
-        this.submit$ = this.form ? this.form.submit$ : EMPTY;
-        this._element = (this.vcr.element as ElementRef<HTMLElement>).nativeElement;
+        private _controlDir: NgControl,
+        private _vcr: ViewContainerRef,
+        private _resolver: ComponentFactoryResolver,
+        @Optional() @SkipSelf() private _form: FormSubmitDirective) {
+        this.submit$ = this._form ? this._form.submit$ : EMPTY;
+        this._element = (this._vcr.element as ElementRef<HTMLElement>).nativeElement;
     }
 
     public ngOnInit(): void {
         merge(
             this.submit$,
-            this.controlDir.valueChanges
+            this._controlDir.valueChanges
         ).subscribe((_: any) => {
-            const controlErrors: ValidationErrors = this.controlDir.control.errors;
+            const controlErrors: ValidationErrors = this._controlDir.control.errors;
 
             if (!controlErrors) return this.setError(null);
 
@@ -54,10 +55,10 @@ export class FormErrorDirective implements OnInit {
         });
     }
 
-    public setError(text: string): void {
+    private setError(text: string): void {
         if (!this.componentRef) {
-            const factory = this.resolver.resolveComponentFactory(ControlErrorComponent);
-            this.componentRef = this.vcr.createComponent(factory);
+            const factory: ComponentFactory<ControlErrorComponent> = this._resolver.resolveComponentFactory(ControlErrorComponent);
+            this.componentRef = this._vcr.createComponent(factory);
         }
 
         this.componentRef.instance.text = text;

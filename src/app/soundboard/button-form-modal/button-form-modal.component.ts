@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ModalService } from "../../services/modal.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SoundboardService } from "../soundboard.service";
-import { SoundboardButton } from "../models/buttons.model";
+import { SoundboardButton, Tag } from "../models/buttons.model";
 import { take } from "rxjs/operators";
 import { Observable } from "rxjs";
 
@@ -32,10 +32,16 @@ export class ButtonFormModalComponent implements OnInit {
     public ngOnInit(): void {
         this.isCreation = this.request === 'POST';
 
+        this.button.tags = [
+            { id: '52', name: 'jaj' },
+            { id: '52', name: 'owo' },
+            { id: '52', name: 'jouj' }
+        ];
         this.buttonFormGroup = this._formBuilder.group({
             id: this._formBuilder.control(this.button.id),
             name: this._formBuilder.control(this.button.name, [Validators.required]),
             description: this._formBuilder.control(this.button.description, [Validators.required]),
+            tags: this._formBuilder.control(this.button.tags?.map((tag: Tag) => tag.name).join(', ')),
             color: this._formBuilder.control(this.button.color, [Validators.required]),
             file: this._formBuilder.control(null, this.isCreation ? [Validators.required] : []),
         });
