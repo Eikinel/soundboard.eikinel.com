@@ -4,12 +4,12 @@ import {
     Input,
     Output,
 } from "@angular/core";
-import { SoundboardButton } from "../models/buttons.model";
+import { SoundboardButton } from "../shared/models/buttons.model";
 import { SoundboardService } from "../soundboard.service";
-import { SoundMode } from "../models/soundmode.enum";
+import { SoundMode } from "../shared/models/soundmode.enum";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ModalService } from "../../services/modal.service";
+import { ModalService } from "../../shared/services/modal.service";
 import { take } from "rxjs/operators";
 import {ButtonFormModalComponent} from "../button-form-modal/button-form-modal.component";
 

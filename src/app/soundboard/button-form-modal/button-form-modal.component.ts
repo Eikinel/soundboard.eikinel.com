@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { ModalService } from "../../services/modal.service";
+import { ModalService } from "../../shared/services/modal.service";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SoundboardService } from "../soundboard.service";
-import { SoundboardButton, Tag } from "../models/buttons.model";
+import { SoundboardButton, Tag } from "../shared/models/buttons.model";
 import { map, switchMap, take } from "rxjs/operators";
 import { EMPTY, Observable, of } from "rxjs";
-import { ApiHttpResponse } from "../models/app-http-response.model";
+import { ApiHttpResponse } from "../../shared/models/app-http-response.model";
 
 enum ButtonFormKeys {
     ID = 'id',
@@ -46,7 +46,7 @@ export class ButtonFormModalComponent implements OnInit {
             [ButtonFormKeys.NAME]: this._formBuilder.control(this.button.name, [Validators.required]),
             [ButtonFormKeys.DESCRIPTION]: this._formBuilder.control(this.button.description, [Validators.required]),
             [ButtonFormKeys.TAGS]: this._formBuilder.array(this.button.tags || []),
-            [ButtonFormKeys.COLOR]: this._formBuilder.control(this.button.color, [Validators.required]),
+            [ButtonFormKeys.COLOR]: this._formBuilder.control(this.button.color || '#FFF', [Validators.required]),
             [ButtonFormKeys.FILE]: this._formBuilder.control(null, this.isCreation ? [Validators.required] : []),
         });
     }

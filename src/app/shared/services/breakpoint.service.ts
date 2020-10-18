@@ -6,7 +6,6 @@ export class BreakpointService implements OnDestroy {
     public innerWidth$: BehaviorSubject<number> = new BehaviorSubject<number>(window.innerWidth);
     public innerHeight$: BehaviorSubject<number> = new BehaviorSubject<number>(window.innerHeight);
     public widthBreakpoint: number = 768;
-    public heightBreakpoint: number;
 
     private readonly _resizeListener: (event: Event) => void;
 

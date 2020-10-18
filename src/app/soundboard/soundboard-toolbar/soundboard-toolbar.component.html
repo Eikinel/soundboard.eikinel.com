@@ -1,5 +1,5 @@
 <div id="soundboard-toolbar-container"
-     class="d-flex flex-row align-items-center px-4 fixed-top">
+     class="d-flex flex-row justify-content-between align-items-center px-4 fixed-top">
     <ul [class.d-none]="!this.isSmallScreen"
         (click)="this.burgerMenuCollapsed = !this.burgerMenuCollapsed"
         class="burger-icon-container"
@@ -39,4 +39,6 @@
             </h6>
         </ng-container>
     </div>
+
+    <app-searchbar [formControl]="this.searchForm"></app-searchbar>
 </div>

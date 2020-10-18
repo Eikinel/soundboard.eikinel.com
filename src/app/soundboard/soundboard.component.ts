@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
-import { SoundboardButton } from "./models/buttons.model";
+import { SoundboardButton } from "./shared/models/buttons.model";
 import { SoundboardToolbarComponent } from "./soundboard-toolbar/soundboard-toolbar.component";
 import { SoundboardService } from "./soundboard.service";
 import { take } from "rxjs/operators";
@@ -33,7 +33,7 @@ export class SoundboardComponent implements OnInit {
             if (button.id === editedButton.id) {
                 this.buttons.splice(index, 1, editedButton);
             }
-        })
+        });
     }
 
     public onButtonDeleted(deletedButton: SoundboardButton): void {

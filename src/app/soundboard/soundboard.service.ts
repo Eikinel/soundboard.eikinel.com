@@ -2,17 +2,19 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { map, switchMap, take } from "rxjs/operators";
-import { SoundboardButton, Tag, UploadedFileApiResponse } from "./models/buttons.model";
-import { FileService } from "../services/file.service";
-import { SoundMode } from "./models/soundmode.enum";
-import { PlaylistElement } from "./models/playlist-element.model";
+import { SoundboardButton, Tag, UploadedFileApiResponse } from "./shared/models/buttons.model";
+import { FileService } from "../shared/services/file.service";
+import { SoundMode } from "./shared/models/soundmode.enum";
+import { PlaylistElement } from "./shared/models/playlist-element.model";
 
 @Injectable()
 export class SoundboardService {
     public audioByButtonFilename: { [filename: string]: AudioBuffer } = {};
+
     public get soundMode(): SoundMode {
         return this._soundMode;
     }
+
     public set soundMode(soundMode: SoundMode) {
         this._soundMode = soundMode;
         if (this._soundMode !== SoundMode.QUEUE) {
@@ -40,6 +42,7 @@ export class SoundboardService {
     public getAllButtons(): Observable<SoundboardButton[]> {
         return this.http.get('/button/all')
             .pipe(
+                take(1),
                 map((buttons: SoundboardButton[]) => buttons)
             );
     }

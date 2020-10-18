@@ -1,0 +1,32 @@
+.searchbar {
+  display: flex;
+  flex-basis: 50%;
+  transition: flex-basis 0.2s;
+
+  &:focus-within {
+    flex-basis: 100% !important;
+  }
+
+  fa-icon {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+  }
+
+  input {
+    color: #ddd;
+    border: none;
+    background-color: #222;
+    padding-left: 2.375rem;
+
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+}

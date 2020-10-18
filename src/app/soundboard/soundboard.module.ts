@@ -6,12 +6,13 @@ import { SoundboardService } from "./soundboard.service";
 import { CommonModule } from "@angular/common";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { ButtonFormModalComponent } from "./button-form-modal/button-form-modal.component";
-import { ModalService } from "../services/modal.service";
+import { ModalService } from "../shared/services/modal.service";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SGLModule } from "../SGL/SGL.module";
 import { BsDropdownConfig, BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { CollapseModule } from "ngx-bootstrap/collapse";
-import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
         BsDropdownModule,
         CollapseModule,
         FontAwesomeModule,
+        SharedModule,
     ]
 })
 export class SoundboardModule {

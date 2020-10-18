@@ -1,15 +1,15 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from "@angular/core";
-import { DropdownTool, Tool } from "../models/tool.model";
-import { ModalService } from "../../services/modal.service";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { DropdownTool, Tool } from "../shared/models/tool.model";
+import { ModalService } from "../../shared/services/modal.service";
 import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
 import { take } from "rxjs/operators";
-import { SoundboardButton } from "../models/buttons.model";
-import { BsModalRef } from "ngx-bootstrap/modal";
-import { SoundMode } from "../models/soundmode.enum";
+import { SoundboardButton } from "../shared/models/buttons.model";
+import { SoundMode } from "../shared/models/soundmode.enum";
 import { SoundboardService } from "../soundboard.service";
-import { BreakpointService } from "../../services/breakpoint.service";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { BreakpointService } from "../../shared/services/breakpoint.service";
+import { FormBuilder, FormControl } from "@angular/forms";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -22,6 +22,7 @@ export class SoundboardToolbarComponent implements OnInit {
     public tools: Tool[] = [];
     public burgerMenuCollapsed: boolean = true;
     public isSmallScreen: boolean = false;
+    public searchForm: FormControl;
     public readonly soundModeLabels: { [soundMode: number]: string } = {
         [SoundMode.OVERRIDE]: 'Override',
         [SoundMode.PARALLELIZE]: 'Parallelize',
@@ -29,11 +30,10 @@ export class SoundboardToolbarComponent implements OnInit {
         [SoundMode.LOOP]: 'Loop'
     };
 
-    private _faPlus: IconDefinition = faPlus;
-
     constructor(
         public modalService: ModalService,
         public breakpointService: BreakpointService,
+        private formBuilder: FormBuilder,
         private soundboardService: SoundboardService) {
     }
 
@@ -41,7 +41,8 @@ export class SoundboardToolbarComponent implements OnInit {
         this.tools = [
             {
                 toolKey: 'createButton',
-                label: `<fa-icon [icon]="${this._faPlus}"></fa-icon> Create new button`,
+                type: 'button',
+                label: 'Create new button',
                 customClass: 'font-weight-bold btn btn-success',
                 onClick: () => {
                     (this.modalService.openModal(ButtonFormModalComponent)
@@ -65,11 +66,14 @@ export class SoundboardToolbarComponent implements OnInit {
                 }
             } as DropdownTool
         ];
+
         this.breakpointService.innerWidth$
             .subscribe((innerWidth: number) => {
                 this.isSmallScreen = innerWidth < this.breakpointService.widthBreakpoint;
                 if (!this.isSmallScreen) this.burgerMenuCollapsed = true;
             });
+
+        this.searchForm = this.formBuilder.control('');
     }
 
     private getToolByToolKey(toolKey: string): Tool {
