@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { map, switchMap, take } from "rxjs/operators";
-import { SoundboardButton, UploadedFileApiResponse } from "./models/buttons.model";
+import { SoundboardButton, Tag, UploadedFileApiResponse } from "./models/buttons.model";
 import { FileService } from "../services/file.service";
 import { SoundMode } from "./models/soundmode.enum";
 import { PlaylistElement } from "./models/playlist-element.model";
@@ -89,7 +89,19 @@ export class SoundboardService {
     }
 
     public deleteButtonById(id: string): Observable<SoundboardButton> {
-        return this.http.delete(`/button/${id}`).pipe(take(1)) as Observable<SoundboardButton>;
+        return this.http.delete(`/button/${id}`) as Observable<SoundboardButton>;
+    }
+
+    public createTags(tags: Tag[]): Observable<Tag[]> {
+        if (!tags?.length) {
+            return of([]);
+        }
+
+        return this.http.post('/tag', tags) as Observable<Tag[]>;
+    }
+
+    public getTagsByNames(names: string[]): Observable<Tag[]> {
+        return this.http.get(`/tag?names=${names.join(',')}`) as Observable<Tag[]>;
     }
 
 

@@ -1,11 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ModalService } from "../../services/modal.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SoundboardService } from "../soundboard.service";
 import { SoundboardButton, Tag } from "../models/buttons.model";
-import { take } from "rxjs/operators";
-import { Observable } from "rxjs";
-import { TagComponent } from "../../SGL/components/tag/tag.component";
+import { map, switchMap, take } from "rxjs/operators";
+import { EMPTY, Observable, of } from "rxjs";
+import { ApiHttpResponse } from "../models/app-http-response.model";
+
+enum ButtonFormKeys {
+    ID = 'id',
+    NAME = 'name',
+    DESCRIPTION = 'description',
+    TAGS = 'tags',
+    COLOR = 'color',
+    FILE = 'file',
+}
 
 @Component({
     selector: 'app-button-form-modal',
@@ -32,19 +41,13 @@ export class ButtonFormModalComponent implements OnInit {
 
     public ngOnInit(): void {
         this.isCreation = this.request === 'POST';
-
-        this.button.tags = [
-            { id: '52', name: 'jaj' },
-            { id: '52', name: 'owo' },
-            { id: '52', name: 'jouj' }
-        ];
         this.buttonFormGroup = this._formBuilder.group({
-            id: this._formBuilder.control(this.button.id),
-            name: this._formBuilder.control(this.button.name, [Validators.required]),
-            description: this._formBuilder.control(this.button.description, [Validators.required]),
-            tags: this._formBuilder.array(this.button.tags?.map((tag: Tag) => tag.name)),
-            color: this._formBuilder.control(this.button.color, [Validators.required]),
-            file: this._formBuilder.control(null, this.isCreation ? [Validators.required] : []),
+            [ButtonFormKeys.ID]: this._formBuilder.control(this.button.id),
+            [ButtonFormKeys.NAME]: this._formBuilder.control(this.button.name, [Validators.required]),
+            [ButtonFormKeys.DESCRIPTION]: this._formBuilder.control(this.button.description, [Validators.required]),
+            [ButtonFormKeys.TAGS]: this._formBuilder.array(this.button.tags || []),
+            [ButtonFormKeys.COLOR]: this._formBuilder.control(this.button.color, [Validators.required]),
+            [ButtonFormKeys.FILE]: this._formBuilder.control(null, this.isCreation ? [Validators.required] : []),
         });
     }
 
@@ -55,16 +58,27 @@ export class ButtonFormModalComponent implements OnInit {
     public submit(): void {
         if (!this.buttonFormGroup.valid) return;
 
-        const method: (button: SoundboardButton, file: File) => Observable<SoundboardButton> =
-            this.isCreation ? this._soundboardService.createButton : this._soundboardService.updateButton;
-
         // Disable all falsy values
         Object.keys(this.buttonFormGroup.value).forEach((key: string) => {
            !this.buttonFormGroup.value[key] && this.buttonFormGroup.get(key).disable();
         });
 
-        method.bind(this._soundboardService)(this.buttonFormGroup.value as SoundboardButton, this._fileToUpload)
-            .pipe(take(1))
+        const tagsFormArray: FormArray = this.buttonFormGroup.get(ButtonFormKeys.TAGS) as FormArray;
+
+        this._soundboardService.createTags(tagsFormArray.value)
+            .pipe(
+                take(1),
+                switchMap(() => this._soundboardService.getTagsByNames(tagsFormArray.value.map((tag: Tag) => tag.name))),
+                switchMap((tags: Tag[]) => {
+                    const method: (button: SoundboardButton, file: File) => Observable<SoundboardButton> =
+                        this.isCreation ? this._soundboardService.createButton : this._soundboardService.updateButton;
+
+                    // Fill new tags with id from API
+                    tagsFormArray.patchValue(tags);
+
+                    return method.bind(this._soundboardService)(this.buttonFormGroup.value as SoundboardButton, this._fileToUpload);
+                })
+            )
             .subscribe((button: SoundboardButton) => {
                 this.onFormSubmitted.emit(button);
                 this.modalService.bsModalRef.hide();

@@ -2,7 +2,7 @@ export interface SoundboardButton {
     id: string;
     name: string;
     description: string;
-    tags: Tag[];
+    tags?: Tag[];
     color: string;
     fileName: string;
     fileType: string;

@@ -12,6 +12,8 @@ import {
 import { fromEvent, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { TagComponent } from "../components/tag/tag.component";
+import { ControlContainer, FormArray, FormControl } from "@angular/forms";
+import { Tag } from "../../soundboard/models/buttons.model";
 
 @Directive({
     selector: '[appTag]'
@@ -22,6 +24,10 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
         return this._host.nativeElement;
     }
 
+    private get tagsFormArray(): FormArray {
+        return this.controlContainer.control as FormArray;
+    }
+
     private _componentRefs: ComponentRef<TagComponent>[] = [];
     private readonly _listeners: { [key: string]: (e: Event) => void };
     private readonly _span: HTMLSpanElement = document.createElement('span');
@@ -29,10 +35,10 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
     private readonly _factory: ComponentFactory<TagComponent>;
 
     constructor(
+        public controlContainer: ControlContainer,
         private _vcr: ViewContainerRef,
         private _resolver: ComponentFactoryResolver,
-        private _host: ElementRef<HTMLDivElement>)
-    {
+        private _host: ElementRef<HTMLDivElement>) {
         this._factory = this._resolver.resolveComponentFactory(TagComponent);
         this._listeners = {
             ',': () => {
@@ -41,7 +47,13 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
                 if (tagContents?.length) {
                     // Waits for key code to append before creating tag
                     setTimeout(() => {
-                        this.getTagsInputContent().forEach((tag: string) => this.toTagComponent(tag));
+                        this.getTagsInputContent().forEach((name: string) => {
+                            // Clean already present tag
+                            if (!this.tagsFormArray.value.filter((tag: Tag) => tag.name === name).length) {
+                                this.toTagComponent({name});
+                                this.tagsFormArray.push(new FormControl({name}));
+                            }
+                        });
                         this._span.textContent = '';
                     }, 0);
                 }
@@ -67,17 +79,24 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        const hostClasses: string[] = ['d-flex', 'flex-row', 'flex-wrap', 'text-break'];
+
         this._span.classList.add('d-flex', 'align-items-center');
         this.element.appendChild(this._span);
         this.element.setAttribute('contenteditable', 'true');
+        hostClasses.forEach((hostClass: string) => this.element.classList.add(hostClass));
 
         fromEvent(this.element, 'keydown')
             .pipe(takeUntil(this._destroyed))
             .subscribe((e: KeyboardEvent) => this._listeners[e.key] ? this._listeners[e.key](e) : 0);
+
+        fromEvent(this.element, 'blur')
+            .pipe(takeUntil(this._destroyed))
+            .subscribe(() => this._listeners[','](null));
     }
 
     public ngAfterViewInit(): void {
-        this.getTagsInputContent().forEach((tag: string) => this.toTagComponent(tag));
+        this.tagsFormArray.value.forEach((tag: Tag) => this.toTagComponent(tag));
     }
 
     public ngOnDestroy(): void {
@@ -89,7 +108,7 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
         return this._span.textContent.trim().split(',').filter((s: string) => s);
     }
 
-    private toTagComponent(name: string): void {
+    private toTagComponent(tag: Tag | Partial<Tag>): void {
         const componentRef = this._vcr.createComponent(this._factory);
         const element: HTMLDivElement = componentRef.location.nativeElement;
         const styles: { [property: string]: any } = {
@@ -100,10 +119,13 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
 
         componentRef.location.nativeElement.setAttribute('contenteditable', 'false');
         Object.keys(styles).forEach((property: string) => element.style[property] = styles[property]);
-        componentRef.instance.name = name;
+        componentRef.instance.name = tag.name;
         componentRef.instance.onDelete.subscribe(() => {
+            const index: number = this._componentRefs.indexOf(componentRef);
+
             componentRef.destroy();
-            this._componentRefs.splice(this._componentRefs.indexOf(componentRef), 1);
+            this._componentRefs.splice(index, 1);
+            this.tagsFormArray.removeAt(index);
         });
         this.element.insertBefore(componentRef.location.nativeElement, this._span);
         this._componentRefs.push(componentRef);

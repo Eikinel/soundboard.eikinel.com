@@ -2,5 +2,5 @@
     <label class="mb-1" [for]="this.uuid">
         <span>{{ this.label }} <i class="text-black-50">{{ this.hint }}</i></span>
     </label>
-    <div appTag class="d-flex flex-row flex-wrap" [id]="this.uuid"></div>
+    <div appTag [formArrayName]="this.controlName" [id]="this.uuid"></div>
 </div>
