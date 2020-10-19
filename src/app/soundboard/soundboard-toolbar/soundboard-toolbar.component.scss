@@ -56,5 +56,15 @@
     display: flex;
     flex: 1 0 auto;
     justify-content: flex-end;
+
+    .searchbar {
+      display: flex;
+      flex-basis: 50%;
+      transition: flex-basis 0.2s;
+
+      &:focus-within {
+        flex-basis: 100% !important;
+      }
+    }
   }
 }

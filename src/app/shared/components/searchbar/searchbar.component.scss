@@ -1,12 +1,4 @@
 .searchbar {
-  display: flex;
-  flex-basis: 50%;
-  transition: flex-basis 0.2s;
-
-  &:focus-within {
-    flex-basis: 100% !important;
-  }
-
   fa-icon {
     position: absolute;
     z-index: 2;

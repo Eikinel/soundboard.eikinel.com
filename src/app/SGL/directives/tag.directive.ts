@@ -50,7 +50,7 @@ export class TagDirective implements OnInit, AfterViewInit, OnDestroy {
                         this.getTagsInputContent().forEach((name: string) => {
                             // Clean already present tag
                             if (!this.tagsFormArray.value.filter((tag: Tag) => tag.name === name).length) {
-                                this.toTagComponent({name});
+                                this.toTagComponent({ name: name.trim() });
                                 this.tagsFormArray.push(new FormControl({name}));
                             }
                         });

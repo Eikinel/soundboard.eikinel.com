@@ -11,6 +11,10 @@ import { PlaylistElement } from "./shared/models/playlist-element.model";
 export class SoundboardService {
     public audioByButtonFilename: { [filename: string]: AudioBuffer } = {};
 
+    public get cachedButtons(): SoundboardButton[] {
+        return this._cachedButtons;
+    }
+
     public get soundMode(): SoundMode {
         return this._soundMode;
     }
@@ -25,16 +29,16 @@ export class SoundboardService {
         }
     }
 
+    private _cachedButtons: SoundboardButton[] = [];
     private _soundMode: SoundMode;
     private _audioContext: AudioContext;
-    private _playlist: PlaylistElement[];
+    private _playlist: PlaylistElement[] = [];
 
     constructor(
         private http: HttpClient,
         private fileService: FileService) {
         this.soundMode = Number(localStorage.getItem('soundMode')) as SoundMode || SoundMode.OVERRIDE;
         this._audioContext = new AudioContext();
-        this._playlist = [];
     }
 
 
@@ -43,7 +47,9 @@ export class SoundboardService {
         return this.http.get('/button/all')
             .pipe(
                 take(1),
-                map((buttons: SoundboardButton[]) => buttons)
+                map((buttons: SoundboardButton[]) => {
+                    return this._cachedButtons = buttons;
+                })
             );
     }
 

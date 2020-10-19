@@ -2,14 +2,13 @@ import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { DropdownTool, Tool } from "../shared/models/tool.model";
 import { ModalService } from "../../shared/services/modal.service";
 import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
-import { take } from "rxjs/operators";
+import { take, takeUntil } from "rxjs/operators";
 import { SoundboardButton } from "../shared/models/buttons.model";
 import { SoundMode } from "../shared/models/soundmode.enum";
 import { SoundboardService } from "../soundboard.service";
 import { BreakpointService } from "../../shared/services/breakpoint.service";
 import { FormBuilder, FormControl } from "@angular/forms";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { IconDefinition } from "@fortawesome/fontawesome-common-types";
+import { Subject } from "rxjs";
 
 @Component({
     selector: 'app-soundboard-toolbar',
@@ -18,6 +17,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 })
 export class SoundboardToolbarComponent implements OnInit {
     @Output() createdButtonEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
+    @Output() search: EventEmitter<string> = new EventEmitter<string>();
 
     public tools: Tool[] = [];
     public burgerMenuCollapsed: boolean = true;
@@ -29,6 +29,8 @@ export class SoundboardToolbarComponent implements OnInit {
         [SoundMode.QUEUE]: 'Queue',
         [SoundMode.LOOP]: 'Loop'
     };
+
+    private readonly _destroyed: Subject<void> = new Subject<void>();
 
     constructor(
         public modalService: ModalService,
@@ -74,6 +76,11 @@ export class SoundboardToolbarComponent implements OnInit {
             });
 
         this.searchForm = this.formBuilder.control('');
+        this.searchForm.valueChanges
+            .pipe(takeUntil(this._destroyed))
+            .subscribe((search: string) => {
+                this.search.emit(search);
+            });
     }
 
     private getToolByToolKey(toolKey: string): Tool {

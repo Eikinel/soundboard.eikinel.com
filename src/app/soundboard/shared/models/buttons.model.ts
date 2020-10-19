@@ -6,6 +6,7 @@ export interface SoundboardButton {
     color: string;
     fileName: string;
     fileType: string;
+    hide?: boolean;
 }
 
 export interface Tag {
