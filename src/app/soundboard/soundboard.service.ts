@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { map, switchMap, take } from "rxjs/operators";
-import { SoundboardButton, Tag, UploadedFileApiResponse } from "./shared/models/buttons.model";
+import { SoundboardButton, Tag, UploadedFileApiResponse } from "./shared/models/soundboard-button.model";
 import { FileService } from "../shared/services/file.service";
 import { SoundMode } from "./shared/models/soundmode.enum";
 import { PlaylistElement } from "./shared/models/playlist-element.model";
@@ -36,7 +36,8 @@ export class SoundboardService {
 
     constructor(
         private http: HttpClient,
-        private fileService: FileService) {
+        private fileService: FileService)
+    {
         this.soundMode = Number(localStorage.getItem('soundMode')) as SoundMode || SoundMode.OVERRIDE;
         this._audioContext = new AudioContext();
     }

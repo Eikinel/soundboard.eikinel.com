@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ModalService } from "../../shared/services/modal.service";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SoundboardService } from "../soundboard.service";
-import { SoundboardButton, Tag } from "../shared/models/buttons.model";
+import { SoundboardButton, Tag } from "../shared/models/soundboard-button.model";
 import { map, switchMap, take } from "rxjs/operators";
 import { EMPTY, Observable, of } from "rxjs";
 import { ApiHttpResponse } from "../../shared/models/app-http-response.model";

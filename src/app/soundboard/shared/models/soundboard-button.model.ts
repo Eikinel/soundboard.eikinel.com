@@ -9,6 +9,12 @@ export interface SoundboardButton {
     hide?: boolean;
 }
 
+export enum SoundboardButtonEvent {
+    CREATED,
+    UPDATED,
+    DELETED,
+}
+
 export interface Tag {
     id: string;
     name: string;

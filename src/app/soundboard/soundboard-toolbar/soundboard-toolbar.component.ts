@@ -3,7 +3,7 @@ import { DropdownTool, Tool } from "../shared/models/tool.model";
 import { ModalService } from "../../shared/services/modal.service";
 import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
 import { take, takeUntil } from "rxjs/operators";
-import { SoundboardButton } from "../shared/models/buttons.model";
+import { SoundboardButton } from "../shared/models/soundboard-button.model";
 import { SoundMode } from "../shared/models/soundmode.enum";
 import { SoundboardService } from "../soundboard.service";
 import { BreakpointService } from "../../shared/services/breakpoint.service";

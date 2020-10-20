@@ -4,7 +4,7 @@ import {
     Input,
     Output,
 } from "@angular/core";
-import { SoundboardButton } from "../shared/models/buttons.model";
+import { SoundboardButton } from "../shared/models/soundboard-button.model";
 import { SoundboardService } from "../soundboard.service";
 import { SoundMode } from "../shared/models/soundmode.enum";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -35,14 +35,14 @@ export class SoundboardButtonComponent {
     }
 
     public editButton(): void {
-        (this.modalService.openModal(ButtonFormModalComponent,{ initialState: { request: 'PUT', button: this.button } })
+        (this.modalService.openModal(ButtonFormModalComponent, { initialState: { request: 'PUT', button: this.button } })
             .content as ButtonFormModalComponent)
             .onFormSubmitted
             .pipe(take(1))
             .subscribe((editedButton: SoundboardButton) => {
                 this.onButtonEdited.emit(editedButton);
                 this.modalService.bsModalRef.hide();
-            })
+            });
     }
 
     public deleteButton(): void {
@@ -51,6 +51,6 @@ export class SoundboardButtonComponent {
             .subscribe((deletedButton: SoundboardButton) => {
                 this.onButtonDeleted.emit(deletedButton);
                 this.modalService.bsModalRef.hide();
-            })
+            });
     }
 }

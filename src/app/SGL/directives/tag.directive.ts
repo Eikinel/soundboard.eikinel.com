@@ -13,7 +13,7 @@ import { fromEvent, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { TagComponent } from "../components/tag/tag.component";
 import { ControlContainer, FormArray, FormControl } from "@angular/forms";
-import { Tag } from "../../soundboard/shared/models/buttons.model";
+import { Tag } from "../../soundboard/shared/models/soundboard-button.model";
 
 @Directive({
     selector: '[appTag]'

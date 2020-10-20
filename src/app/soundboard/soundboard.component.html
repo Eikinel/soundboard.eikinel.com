@@ -1,6 +1,6 @@
 <div id="soundboard-container" class="w-100 h-100 text-white">
     <app-soundboard-toolbar #soundboardToolbar
-                            (createdButtonEvent)="this.onButtonCreated($event)"
+                            (createdButtonEvent)="this.onButtonEvent(SoundboardButtonEvent.CREATED, $event)"
                             (search)="this.onSearch($event)">
     </app-soundboard-toolbar>
 
@@ -11,8 +11,8 @@
                     *ngIf="!button.hide"
                     [button]="button"
                     [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
-                    (onButtonEdited)="this.onButtonEdited($event)"
-                    (onButtonDeleted)="this.onButtonDeleted($event)">
+                    (onButtonEdited)="this.onButtonEvent(SoundboardButtonEvent.UPDATED, $event)"
+                    (onButtonDeleted)="this.onButtonEvent(SoundboardButtonEvent.DELETED, $event)">
             </app-soundboard-button>
         </ng-container>
     </div>
