@@ -13,6 +13,7 @@ export class SoundboardComponent implements OnInit {
     @ViewChild('soundboardToolbar') soundboardToolbar: SoundboardToolbarComponent;
 
     public buttons: SoundboardButton[] = [];
+    public loading: boolean = true;
     public SoundboardButtonEvent: typeof SoundboardButtonEvent = SoundboardButtonEvent;
 
     private readonly _soundboardEventListeners: { [event: number]: (button: SoundboardButton) => void };
@@ -30,6 +31,7 @@ export class SoundboardComponent implements OnInit {
             .pipe(take(1))
             .subscribe((buttons: SoundboardButton[]) => {
                 this.buttons = buttons;
+                this.loading = false;
             });
     }
 

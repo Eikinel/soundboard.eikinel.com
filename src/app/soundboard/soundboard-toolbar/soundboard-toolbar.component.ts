@@ -35,7 +35,6 @@ export class SoundboardToolbarComponent implements OnInit {
     constructor(
         public modalService: ModalService,
         public breakpointService: BreakpointService,
-        private formBuilder: FormBuilder,
         private soundboardService: SoundboardService) {
     }
 
@@ -75,7 +74,7 @@ export class SoundboardToolbarComponent implements OnInit {
                 if (!this.isSmallScreen) this.burgerMenuCollapsed = true;
             });
 
-        this.searchForm = this.formBuilder.control('');
+        this.searchForm = new FormControl();
         this.searchForm.valueChanges
             .pipe(takeUntil(this._destroyed))
             .subscribe((search: string) => {

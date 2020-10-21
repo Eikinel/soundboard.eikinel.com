@@ -9,7 +9,7 @@ import { FormControl } from "@angular/forms";
     styleUrls: ['./searchbar.component.scss']
 })
 export class SearchbarComponent {
-    @Input() formControl: FormControl;
+    @Input() searchControl: FormControl;
 
     public readonly faSearch: IconDefinition = faSearch;
 }
