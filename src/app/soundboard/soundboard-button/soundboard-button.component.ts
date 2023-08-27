@@ -11,7 +11,8 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { ModalService } from "../../shared/services/modal.service";
 import { take } from "rxjs/operators";
-import {ButtonFormModalComponent} from "../button-form-modal/button-form-modal.component";
+import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
+import { ModalOptions } from "ngx-bootstrap/modal";
 
 @Component({
     selector: 'app-soundboard-button',
@@ -35,7 +36,7 @@ export class SoundboardButtonComponent {
     }
 
     public editButton(): void {
-        (this.modalService.openModal(ButtonFormModalComponent, { initialState: { request: 'PUT', button: this.button } })
+        (this.modalService.openModal(ButtonFormModalComponent, { initialState: { request: 'PUT', button: this.button } } as ModalOptions<Object>)
             .content as ButtonFormModalComponent)
             .onFormSubmitted
             .pipe(take(1))
