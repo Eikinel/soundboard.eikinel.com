@@ -1,3 +1,4 @@
+/.angular/cache
 # Pckages
 node_modules
 package-lock.json
