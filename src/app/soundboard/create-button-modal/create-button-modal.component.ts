@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { ModalService } from "../../services/modal.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { SoundboardService } from "../soundboard.service";
 import { SoundboardButton, SoundboardButtonPayload } from "../../models/buttons.model";
 import { take } from "rxjs/operators";
@@ -13,14 +13,14 @@ import { take } from "rxjs/operators";
 export class CreateButtonModalComponent implements OnInit {
     @Output() buttonCreatedEvent: EventEmitter<SoundboardButton> = new EventEmitter<SoundboardButton>();
 
-    public buttonFormGroup: FormGroup;
+    public buttonFormGroup: UntypedFormGroup;
 
     private _fileToUpload: File;
 
     constructor(
         public modalService: ModalService,
         private _soundboardService: SoundboardService,
-        private _formBuilder: FormBuilder) {}
+        private _formBuilder: UntypedFormBuilder) {}
 
     public ngOnInit(): void {
         this.buttonFormGroup = this._formBuilder.group({
