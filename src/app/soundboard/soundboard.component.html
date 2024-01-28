@@ -1,12 +1,17 @@
 <div id="soundboard-container" class="w-100 h-100 text-white">
-    <app-soundboard-toolbar (createdButtonEvent)="this.onButtonCreated($event)"></app-soundboard-toolbar>
+  <sndb-toolbar
+    (createdButtonEvent)="this.onButtonCreated($event)"
+  ></sndb-toolbar>
 
-    <div class="buttons-container position-relative d-flex flex-row flex-wrap
-                align-items-center justify-content-center">
-        <ng-container *ngFor="let button of this.buttons">
-            <app-soundboard-button [button]="button"
-                                   [onClick]="this.soundboardService.playAudio.bind(soundboardService)">
-            </app-soundboard-button>
-        </ng-container>
-    </div>
+  <div
+    class="buttons-container position-relative d-flex flex-row flex-wrap align-items-center justify-content-center"
+  >
+    <ng-container *ngFor="let button of this.buttons">
+      <sndb-button
+        [button]="button"
+        [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
+      >
+      </sndb-button>
+    </ng-container>
+  </div>
 </div>
