@@ -1,0 +1,28 @@
+#soundboard-container {
+  background-color: #222;
+  overflow-x: hidden;
+
+  .buttons-container {
+    min-height: calc(100vh - 64px);
+    top: 64px;
+    max-width: 100vw;
+
+    .button-container {
+      width: fit-content;
+      height: fit-content;
+      padding: 50px;
+    }
+  }
+
+  #no-button-available {
+    padding: 0 12vw;
+
+    h1 {
+      font-size: 4rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+}

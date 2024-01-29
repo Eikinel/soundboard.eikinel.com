@@ -1,0 +1,14 @@
+.label-button,
+.label-file {
+  cursor: pointer;
+  background-color: #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.label-button:hover,
+.label-file:hover {
+  background-color: #bbb;
+}

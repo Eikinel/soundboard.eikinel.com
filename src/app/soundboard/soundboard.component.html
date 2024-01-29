@@ -1,0 +1,41 @@
+<div id="soundboard-container" class="w-100 h-100 text-white">
+  <app-soundboard-toolbar
+    #soundboardToolbar
+    (createdButtonEvent)="
+      this.onButtonEvent(SoundboardButtonEvent.CREATED, $event)
+    "
+    (search)="this.onSearch($event)"
+  ></app-soundboard-toolbar>
+
+  <div
+    class="buttons-container position-relative d-flex flex-row flex-wrap align-items-center justify-content-center"
+  >
+    <ng-container *ngFor="let button of this.buttons">
+      <app-soundboard-button
+        *ngIf="!button.hide"
+        [button]="button"
+        [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
+        (onButtonEdited)="
+          this.onButtonEvent(SoundboardButtonEvent.UPDATED, $event)
+        "
+        (onButtonDeleted)="
+          this.onButtonEvent(SoundboardButtonEvent.DELETED, $event)
+        "
+      ></app-soundboard-button>
+    </ng-container>
+
+    <div
+      *ngIf="this.buttons?.length < 1"
+      id="no-button-available"
+      class="text-center"
+    >
+      <h1 class="my-5">No button available</h1>
+      <h2 class="my-5">
+        <i
+          >You can start adding buttons by clicking on the "Create new button"
+          tool on the top left corner of the toolbar
+        </i>
+      </h2>
+    </div>
+  </div>
+</div>

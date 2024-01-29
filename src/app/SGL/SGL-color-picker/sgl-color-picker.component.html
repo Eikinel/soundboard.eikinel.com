@@ -1,0 +1,12 @@
+<label
+  class="input-container d-flex flex-column mb-3"
+  [formGroup]="this.controlContainer.control"
+>
+  <label>{{ this.label }}</label>
+  <compact-picker
+    class="w-100"
+    [color]="'#FFF'"
+    (colorChange)="this.setFormColorValue($event)"
+  >
+  </compact-picker>
+</label>

@@ -1,9 +1,9 @@
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { SoundboardComponent } from "./soundboard/soundboard.component";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { RouterModule, Routes } from "@angular/router";
-import { SoundboardComponent } from "./modules/soundboard.component";
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {}),
+    RouterModule.forRoot(routes),
     CommonModule,
     BrowserModule,
     HttpClientModule,

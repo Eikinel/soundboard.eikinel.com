@@ -1,0 +1,71 @@
+<div
+  id="soundboard-toolbar-container"
+  class="d-flex flex-row justify-content-between align-items-center px-4 fixed-top"
+>
+  <ul
+    [class.d-none]="!this.isSmallScreen"
+    (click)="this.burgerMenuCollapsed = !this.burgerMenuCollapsed"
+    class="burger-icon-container"
+    aria-controls="burger-menu-collapse"
+  >
+    <li class="burger-bar"></li>
+    <li class="burger-bar"></li>
+    <li class="burger-bar"></li>
+  </ul>
+
+  <div
+    id="tools-container"
+    [ngClass]="
+      !this.isSmallScreen ? 'flex-row' : 'flex-column justify-content-between'
+    "
+    [class.d-flex]="
+      !this.isSmallScreen || (this.isSmallScreen && !this.burgerMenuCollapsed)
+    "
+    [collapse]="this.burgerMenuCollapsed && this.isSmallScreen"
+    [class.dropdown-menu]="!this.burgerMenuCollapsed"
+  >
+    <ng-container *ngFor="let tool of this.tools" [ngSwitch]="tool.type">
+      <div
+        *ngSwitchCase="'dropdown'"
+        class="btn-group"
+        dropdown
+        [class.dropdown-item]="this.isSmallScreen"
+      >
+        <button
+          id="button-basic"
+          dropdownToggle
+          type="button"
+          class="tool btn btn-primary dropdown-toggle"
+          aria-controls="dropdown-basic"
+        >
+          {{ tool.label }} <span class="caret"></span>
+        </button>
+
+        <ul
+          id="dropdown-basic"
+          *dropdownMenu
+          class="dropdown-menu"
+          role="menu"
+          aria-labelledby="button-basic"
+        >
+          <li *ngFor="let list of tool.list | keyvalue" role="menuitem">
+            <a class="dropdown-item" (click)="tool.onClick(list.value)">{{
+              list.key
+            }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <h6
+        *ngSwitchDefault
+        class="tool text-center my-0"
+        [ngClass]="tool.customClass"
+        [class.dropdown-item]="this.isSmallScreen"
+        (click)="tool.onClick(tool.args)"
+        [innerHTML]="tool.label"
+      ></h6>
+    </ng-container>
+  </div>
+
+  <app-searchbar [searchControl]="this.searchForm"></app-searchbar>
+</div>

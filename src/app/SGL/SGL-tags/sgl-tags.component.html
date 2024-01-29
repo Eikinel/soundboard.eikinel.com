@@ -1,0 +1,11 @@
+<div
+  class="input-container d-flex flex-column align-items-start mb-3"
+  [formGroup]="this.controlContainer.control"
+>
+  <label class="mb-1" [for]="this.uuid">
+    <span
+      >{{ this.label }} <i class="text-black-50">{{ this.hint }}</i></span
+    >
+  </label>
+  <div appTag [formArrayName]="this.controlName" [id]="this.uuid"></div>
+</div>

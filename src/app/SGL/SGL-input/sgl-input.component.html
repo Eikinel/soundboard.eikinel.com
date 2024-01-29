@@ -1,0 +1,32 @@
+<div
+  class="input-container d-flex flex-column align-items-start mb-3"
+  [formGroup]="this.controlContainer.control"
+>
+  <label
+    class="mb-1"
+    [class.label-file]="this.type === 'file'"
+    [for]="this.uuid"
+  >
+    {{ this.type === "file" ? "Select a file" : this.label }}
+  </label>
+  <input
+    #input
+    [id]="this.uuid"
+    [class.d-none]="this.type === 'file'"
+    [type]="this.type"
+    [formControlName]="this.controlName"
+    [customErrors]="this.customErrors"
+  />
+  <span *ngIf="this.type === 'file'" class="d-flex justify-content-center">
+    <span
+      *ngIf="input.files.length > 0; else noFileSelected"
+      class="font-weight-bold"
+    >
+      You selected:
+      <span class="font-weight-normal">{{ input.files[0].name }}</span>
+    </span>
+    <ng-template #noFileSelected>
+      <span>No file selected</span>
+    </ng-template>
+  </span>
+</div>
