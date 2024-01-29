@@ -1,0 +1,20 @@
+<form appFormSubmit appFormOptional [formGroup]="this.buttonFormGroup">
+  <sndb-input label="Name" controlName="name"></sndb-input>
+  <sndb-input label="Description" controlName="description"></sndb-input>
+  <app-sgl-tags
+    label="Tags"
+    hint="(Separate tags with a comma)"
+    controlName="tags"
+  ></app-sgl-tags>
+  <app-sgl-color-picker
+    label="Hexadecimal color"
+    controlName="color"
+  ></app-sgl-color-picker>
+  <sndb-input
+    label="File"
+    type="file"
+    controlName="file"
+    (change)="this.onFileSelect($event)"
+    [customErrors]="this.fileCustomErrors"
+  ></sndb-input>
+</form>

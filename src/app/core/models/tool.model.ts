@@ -1,7 +1,12 @@
 export class Tool {
-  label: string;
-  customClass: string;
-  onClick: (...args: any[]) => any;
-  args?: any[];
-  value?: any;
+    toolKey: string;
+    label: string;
+    type?: string;
+    customClass?: string;
+    onClick?: (...args: any[]) => any;
+    args?: any[];
+}
+
+export class DropdownTool extends Tool {
+    list: { [label: string]: any };
 }
