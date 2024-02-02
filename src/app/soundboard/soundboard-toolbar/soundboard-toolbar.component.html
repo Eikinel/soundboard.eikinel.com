@@ -38,7 +38,8 @@
           class="tool btn btn-primary dropdown-toggle"
           aria-controls="dropdown-basic"
         >
-          {{ tool.label }} <span class="caret"></span>
+          {{ tool.label }}
+          <span class="caret"></span>
         </button>
 
         <ul
@@ -54,6 +55,18 @@
             }}</a>
           </li>
         </ul>
+      </div>
+
+      <div
+        *ngSwitchCase="'checkbox'"
+        class="d-flex justify-content-between align-items-center"
+      >
+        <input
+          type="checkbox"
+          [formControl]="masterControl"
+          (change)="tool.onClick()"
+        />
+        <label class="mx-2">{{ tool.label }}</label>
       </div>
 
       <h6

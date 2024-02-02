@@ -1,14 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { DropdownTool, Tool } from "../shared/models/tool.model";
+import { FormControl } from "@angular/forms";
+import { Subject } from "rxjs";
+import { take, takeUntil } from "rxjs/operators";
+import { BreakpointService } from "../../shared/services/breakpoint.service";
 import { ModalService } from "../../shared/services/modal.service";
 import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
-import { take, takeUntil } from "rxjs/operators";
 import { SoundboardButton } from "../shared/models/soundboard-button.model";
 import { SoundMode } from "../shared/models/soundmode.enum";
+import { DropdownTool, Tool } from "../shared/models/tool.model";
 import { SoundboardService } from "../soundboard.service";
-import { BreakpointService } from "../../shared/services/breakpoint.service";
-import { FormBuilder, FormControl } from "@angular/forms";
-import { Subject } from "rxjs";
 
 @Component({
   selector: "app-soundboard-toolbar",
@@ -30,6 +30,7 @@ export class SoundboardToolbarComponent implements OnInit {
     [SoundMode.QUEUE]: "Queue",
     [SoundMode.LOOP]: "Loop",
   };
+  public masterControl: FormControl;
 
   private readonly _destroyed: Subject<void> = new Subject<void>();
 
@@ -40,6 +41,8 @@ export class SoundboardToolbarComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.soundboardService.master = true;
+    this.masterControl = new FormControl(this.soundboardService.master);
     this.tools = [
       {
         toolKey: "createButton",
@@ -69,6 +72,14 @@ export class SoundboardToolbarComponent implements OnInit {
             `Sound mode: ${this.soundModeLabels[soundMode]}`;
         },
       } as DropdownTool,
+      {
+        toolKey: "master",
+        type: "checkbox",
+        label: "Maximize volume",
+        onClick: () => {
+          this.soundboardService.master = this.masterControl.value;
+        },
+      },
     ];
 
     this.breakpointService.innerWidth$.subscribe((innerWidth: number) => {

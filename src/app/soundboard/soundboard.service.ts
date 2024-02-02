@@ -15,6 +15,7 @@ import { SoundMode } from "./shared/models/soundmode.enum";
 @Injectable()
 export class SoundboardService {
   public audioByButtonFilename: { [filename: string]: AudioBuffer } = {};
+  public master: boolean;
 
   public get cachedButtons(): SoundboardButton[] {
     return this._cachedButtons;
@@ -177,8 +178,10 @@ export class SoundboardService {
     const source: AudioBufferSourceNode =
       this._audioContext.createBufferSource();
 
+    const audioNode = this._master(this._audioContext, source);
+
     source.buffer = playlistElement.audioBuffer;
-    source.connect(this._audioContext.destination);
+    source.connect(audioNode || this._audioContext.destination);
     source.start();
     console.log(`Playing ${playlistElement.filename}`);
 
@@ -194,5 +197,24 @@ export class SoundboardService {
         this._playCachedAudio(this._playlist[0]);
       }
     };
+  }
+
+  private _master(
+    audioContext: AudioContext,
+    source: AudioBufferSourceNode,
+  ): AudioNode | null {
+    if (this.master) {
+      const gainNode = audioContext.createGain();
+      const compressorNode = audioContext.createDynamicsCompressor();
+
+      source.connect(gainNode);
+      gainNode.connect(compressorNode);
+      gainNode.gain.value = 30;
+      compressorNode.connect(audioContext.destination);
+
+      return compressorNode;
+    }
+
+    return null;
   }
 }
