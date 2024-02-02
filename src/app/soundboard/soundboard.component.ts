@@ -41,10 +41,17 @@ export class SoundboardComponent implements OnInit {
       .getAllButtons()
       .pipe(take(1))
       .subscribe((buttons: SoundboardButton[]) => {
-        this.buttons = buttons.sort((a, b) =>
-          a.category.localeCompare(b.category),
+        let categories = buttons.map(({ category }) => category);
+
+        categories = categories.filter(
+          (category, i) => categories.findIndex((c) => c === category) === i,
         );
-        this.categories = buttons.map(({ category }) => category);
+
+        this.categories = categories;
+        this.buttons = buttons.sort((a, b) =>
+          a.category?.localeCompare(b.category),
+        );
+
         this.loading = false;
       });
   }
