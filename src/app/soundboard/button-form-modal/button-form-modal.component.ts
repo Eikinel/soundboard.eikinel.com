@@ -1,24 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { ModalService } from "../../shared/services/modal.service";
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import { SoundboardService } from "../soundboard.service";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ModalService } from "@shared/services/modal.service";
+import { Observable } from "rxjs";
+import { switchMap, take } from "rxjs/operators";
+import { Category } from "../shared/models/category.model";
 import {
   SoundboardButton,
   Tag,
 } from "../shared/models/soundboard-button.model";
-import { map, switchMap, take } from "rxjs/operators";
-import { EMPTY, Observable, of } from "rxjs";
-import { ApiHttpResponse } from "../../shared/models/app-http-response.model";
+import { SoundboardService } from "../soundboard.service";
 
 enum ButtonFormKeys {
   ID = "id",
   NAME = "name",
+  CATEGORY = "category",
   DESCRIPTION = "description",
   TAGS = "tags",
   COLOR = "color",
@@ -42,36 +37,48 @@ export class ButtonFormModalComponent implements OnInit {
       "This file type is not accepted. The accepted ones are : .mp3, .wav, .ogg, .flac, .wma, .m4a",
   };
   public isCreation: boolean;
+  public categories: string[];
 
   private _fileToUpload: File;
 
   constructor(
-    public modalService: ModalService,
-    private _soundboardService: SoundboardService,
-    private _formBuilder: FormBuilder,
+    public readonly modalService: ModalService,
+    private readonly soundboardService: SoundboardService,
+    private readonly formBuilder: FormBuilder,
   ) {}
 
   public ngOnInit(): void {
     this.isCreation = this.request === "POST";
-    this.buttonFormGroup = this._formBuilder.group({
-      [ButtonFormKeys.ID]: this._formBuilder.control(this.button.id),
-      [ButtonFormKeys.NAME]: this._formBuilder.control(this.button.name, [
-        Validators.required,
-      ]),
-      [ButtonFormKeys.DESCRIPTION]: this._formBuilder.control(
-        this.button.description,
+    this.buttonFormGroup = this.formBuilder.group({
+      [ButtonFormKeys.ID]: this.formBuilder.control(this.button.id),
+      [ButtonFormKeys.CATEGORY]: this.formBuilder.control(
+        this.button.category,
         [Validators.required],
       ),
-      [ButtonFormKeys.TAGS]: this._formBuilder.array(this.button.tags || []),
-      [ButtonFormKeys.COLOR]: this._formBuilder.control(
+      [ButtonFormKeys.NAME]: this.formBuilder.control(this.button.name, [
+        Validators.required,
+      ]),
+      [ButtonFormKeys.DESCRIPTION]: this.formBuilder.control(
+        this.button.description,
+      ),
+      [ButtonFormKeys.TAGS]: this.formBuilder.array(this.button.tags || []),
+      [ButtonFormKeys.COLOR]: this.formBuilder.control(
         this.button.color || "#FFF",
         [Validators.required],
       ),
-      [ButtonFormKeys.FILE]: this._formBuilder.control(
+      [ButtonFormKeys.FILE]: this.formBuilder.control(
         null,
         this.isCreation ? [Validators.required] : [],
       ),
     });
+
+    this.soundboardService
+      .getCategories()
+      .pipe(take(1))
+      .subscribe(
+        (categories: Category[]) =>
+          (this.categories = categories.map(({ name }) => name)),
+      );
   }
 
   public onFileSelect(event: any): void {
@@ -91,12 +98,12 @@ export class ButtonFormModalComponent implements OnInit {
       ButtonFormKeys.TAGS,
     ) as FormArray;
 
-    this._soundboardService
+    this.soundboardService
       .createTags(tagsFormArray.value)
       .pipe(
         take(1),
         switchMap(() =>
-          this._soundboardService.getTagsByNames(
+          this.soundboardService.getTagsByNames(
             tagsFormArray.value.map((tag: Tag) => tag.name),
           ),
         ),
@@ -105,13 +112,13 @@ export class ButtonFormModalComponent implements OnInit {
             button: SoundboardButton,
             file: File,
           ) => Observable<SoundboardButton> = this.isCreation
-            ? this._soundboardService.createButton
-            : this._soundboardService.updateButton;
+            ? this.soundboardService.createButton
+            : this.soundboardService.updateButton;
 
           // Fill new tags with id from API
           tagsFormArray.patchValue(tags);
 
-          return method.bind(this._soundboardService)(
+          return method.bind(this.soundboardService)(
             this.buttonFormGroup.value as SoundboardButton,
             this._fileToUpload,
           );

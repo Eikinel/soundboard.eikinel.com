@@ -1,15 +1,16 @@
-import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
 import { HttpClient, HttpResponse } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { FileService } from "@shared/services/file.service";
+import { Observable, of } from "rxjs";
 import { map, switchMap, take } from "rxjs/operators";
+import { Category } from "./shared/models/category.model";
+import { PlaylistElement } from "./shared/models/playlist-element.model";
 import {
   SoundboardButton,
   Tag,
   UploadedFileApiResponse,
 } from "./shared/models/soundboard-button.model";
-import { FileService } from "../shared/services/file.service";
 import { SoundMode } from "./shared/models/soundmode.enum";
-import { PlaylistElement } from "./shared/models/playlist-element.model";
 
 @Injectable()
 export class SoundboardService {
@@ -125,7 +126,11 @@ export class SoundboardService {
   }
 
   public getTagsByNames(names: string[]): Observable<Tag[]> {
-    return this.http.get(`/tag?names=${names.join(",")}`) as Observable<Tag[]>;
+    return this.http.get<Tag[]>(`/tag?names=${names.join(",")}`);
+  }
+
+  public getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>("/category/all");
   }
 
   // METHODS

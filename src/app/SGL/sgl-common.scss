@@ -7,6 +7,7 @@ div[contenteditable] {
   border: solid 1px transparent;
   border-radius: 5px;
   box-shadow: 0 0 1px 1px #c4c4c6;
+  background-color: transparent;
 
   &:focus {
     box-shadow: 0 0 0 2px #007bff;

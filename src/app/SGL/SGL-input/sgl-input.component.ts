@@ -1,6 +1,5 @@
 import { Component, Input } from "@angular/core";
 import { ControlContainer } from "@angular/forms";
-import { generateUUID } from "../../utils/generate-uuid";
 import { SglInputBaseComponent } from "../components/sgl-input-base.component";
 
 @Component({
@@ -13,6 +12,7 @@ export class SglInputComponent extends SglInputBaseComponent {
   @Input() label: string;
   @Input() type: "text" | "file" = "text";
   @Input() customErrors: object = {};
+  @Input() typeahead: string;
 
   constructor(public controlContainer: ControlContainer) {
     super(controlContainer);

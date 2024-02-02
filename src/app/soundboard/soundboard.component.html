@@ -8,21 +8,25 @@
   ></app-soundboard-toolbar>
 
   <div
-    class="buttons-container position-relative d-flex flex-row flex-wrap align-items-center justify-content-center"
+    *ngFor="let category of getVisibleCategories()"
+    class="categoryContainer d-flex flex-column flex-wrap mb-5"
   >
-    <ng-container *ngFor="let button of this.buttons">
-      <app-soundboard-button
-        *ngIf="!button.hide"
-        [button]="button"
-        [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
-        (onButtonEdited)="
-          this.onButtonEvent(SoundboardButtonEvent.UPDATED, $event)
-        "
-        (onButtonDeleted)="
-          this.onButtonEvent(SoundboardButtonEvent.DELETED, $event)
-        "
-      ></app-soundboard-button>
-    </ng-container>
+    <span class="category">{{ category }}</span>
+    <div class="buttons-container position-relative d-flex flex-row flex-wrap">
+      <ng-container *ngFor="let button of getButtonsByCategory(category)">
+        <app-soundboard-button
+          *ngIf="!button.hide"
+          [button]="button"
+          [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
+          (onButtonEdited)="
+            this.onButtonEvent(SoundboardButtonEvent.UPDATED, $event)
+          "
+          (onButtonDeleted)="
+            this.onButtonEvent(SoundboardButtonEvent.DELETED, $event)
+          "
+        ></app-soundboard-button>
+      </ng-container>
+    </div>
 
     <div
       *ngIf="this.buttons?.length < 1"

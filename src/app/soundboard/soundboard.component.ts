@@ -16,6 +16,7 @@ export class SoundboardComponent implements OnInit {
   @ViewChild("soundboardToolbar") soundboardToolbar: SoundboardToolbarComponent;
 
   public buttons: SoundboardButton[] = [];
+  public categories: string[] = [];
   public loading: boolean = true;
   public SoundboardButtonEvent: typeof SoundboardButtonEvent =
     SoundboardButtonEvent;
@@ -40,14 +41,22 @@ export class SoundboardComponent implements OnInit {
       .getAllButtons()
       .pipe(take(1))
       .subscribe((buttons: SoundboardButton[]) => {
-        this.buttons = buttons;
+        this.buttons = buttons.sort((a, b) =>
+          a.category.localeCompare(b.category),
+        );
+        this.categories = buttons.map(({ category }) => category);
         this.loading = false;
       });
   }
 
   public onSearch(search: string): void {
+    const regex = new RegExp(search, "gi");
+
     this.buttons.map((button: SoundboardButton) => {
-      button.hide = !button.name.match(new RegExp(search, "gi"));
+      button.hide =
+        !button.name.match(regex) &&
+        !button.category.match(regex) &&
+        !button.tags.some((tag) => tag.name.match(regex));
     });
   }
 
@@ -56,6 +65,18 @@ export class SoundboardComponent implements OnInit {
     button: SoundboardButton,
   ): void {
     this._soundboardEventListeners[event]?.(button);
+  }
+
+  public getVisibleCategories(): string[] {
+    return this.categories.map((category) => {
+      if (this.getButtonsByCategory(category).some((button) => !button.hide)) {
+        return category;
+      }
+    });
+  }
+
+  public getButtonsByCategory(category: string): SoundboardButton[] {
+    return this.buttons.filter((button) => button.category === category);
   }
 
   private onButtonCreated(button: SoundboardButton): void {

@@ -1,16 +1,24 @@
 #soundboard-container {
+  margin-top: 4em;
   background-color: #222;
   overflow-x: hidden;
+  padding: 2em;
 
-  .buttons-container {
-    min-height: calc(100vh - 64px);
-    top: 64px;
-    max-width: 100vw;
+  .categoryContainer {
 
-    .button-container {
-      width: fit-content;
-      height: fit-content;
-      padding: 50px;
+    .category {
+      font-size: 3em;
+      color: #BBB;
+      font-family: "Courier New", serif;
+    }
+
+    .buttons-container {
+
+      .button-container {
+        width: fit-content;
+        height: fit-content;
+        padding: 50px;
+      }
     }
   }
 

@@ -1,8 +1,9 @@
 export interface SoundboardButton {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   tags?: Tag[];
+  category: string;
   color: string;
   fileName: string;
   fileType: string;

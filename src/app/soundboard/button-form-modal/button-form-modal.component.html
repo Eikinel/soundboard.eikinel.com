@@ -7,7 +7,12 @@
   [modalRef]="this.modalService.bsModalRef"
 >
   <form appFormSubmit appFormOptional [formGroup]="this.buttonFormGroup">
-    <app-sgl-input label="Name" controlName="name"></app-sgl-input>
+    <app-sgl-input label="Name *" controlName="name"></app-sgl-input>
+    <app-sgl-select
+      label="Category *"
+      [data]="categories"
+      controlName="category"
+    ></app-sgl-select>
     <app-sgl-input
       label="Description"
       controlName="description"
@@ -22,13 +27,12 @@
       controlName="color"
     ></app-sgl-color-picker>
     <app-sgl-input
-      label="File"
+      label="File *"
       type="file"
       controlName="file"
       (change)="this.onFileSelect($event)"
       [customErrors]="this.fileCustomErrors"
-    >
-    </app-sgl-input>
+    ></app-sgl-input>
 
     <button class="mt-3 text-white w-100" (click)="this.submit()">
       {{ this.isCreation ? "Create" : "Update" }}
