@@ -14,7 +14,7 @@ import { SoundMode } from "./shared/models/soundmode.enum";
 
 @Injectable()
 export class SoundboardService {
-  public audioByButtonFilename: { [filename: string]: AudioBuffer } = {};
+  public audioByButtonfileName: { [fileName: string]: AudioBuffer } = {};
   public master: boolean;
 
   public get cachedButtons(): SoundboardButton[] {
@@ -30,7 +30,7 @@ export class SoundboardService {
     if (this._soundMode !== SoundMode.QUEUE) {
       if (this._playlist && this._playlist.length > 0) {
         console.log(
-          `Clearing playlist containing ${this._playlist.map((e: PlaylistElement) => e.filename).join(", ")}`,
+          `Clearing playlist containing ${this._playlist.map((e: PlaylistElement) => e.fileName).join(", ")}`,
         );
       }
       this._playlist = [];
@@ -62,7 +62,7 @@ export class SoundboardService {
     );
   }
 
-  public getMediaByFileName(fileName: string): Observable<ArrayBuffer> {
+  public getMediaByfileName(fileName: string): Observable<ArrayBuffer> {
     return this.fileService
       .downloadFileByFileName(fileName, "response", "arraybuffer")
       .pipe(
@@ -134,8 +134,76 @@ export class SoundboardService {
     return this.http.get<Category[]>("/category/all");
   }
 
+  public async computeGain(fileOrBuffer: File | AudioBuffer): Promise<number> {
+    let buffer: AudioBuffer;
+
+    if (fileOrBuffer instanceof File) {
+      console.log(`Computing gain for file ${fileOrBuffer.name}`);
+
+      const data = await fileOrBuffer.arrayBuffer();
+      const audioContext = new AudioContext();
+
+      buffer = await audioContext.decodeAudioData(data);
+    } else {
+      buffer = fileOrBuffer;
+    }
+
+    return new Promise((resolve) => {
+      const { length, sampleRate } = buffer;
+      const offlineAudioContext = new OfflineAudioContext({
+        length,
+        sampleRate,
+      });
+      const offlineSource = new AudioBufferSourceNode(offlineAudioContext, {
+        buffer,
+      });
+      const analyser = offlineAudioContext.createAnalyser();
+      const renderQuantumInSeconds = 128 / sampleRate;
+      const durationInSeconds = length / sampleRate;
+      const frequencies = new Uint8Array(analyser.frequencyBinCount);
+      let volume: number = 0;
+
+      offlineSource.connect(analyser);
+      offlineSource.start();
+
+      const analyze = (index: number = 1) => {
+        const suspendTime = renderQuantumInSeconds * index;
+
+        if (suspendTime < durationInSeconds) {
+          offlineAudioContext.suspend(suspendTime).then(() => {
+            analyser.getByteFrequencyData(frequencies);
+
+            let sum = 0;
+            for (const amplitude of frequencies) {
+              sum += amplitude * amplitude;
+            }
+
+            const currentVolume = Math.sqrt(sum / frequencies.length);
+
+            if (currentVolume > volume) {
+              volume = currentVolume;
+            }
+
+            analyze(index + 1);
+          });
+        }
+
+        offlineAudioContext[index === 1 ? "startRendering" : "resume"]();
+      };
+
+      analyze();
+
+      offlineAudioContext.oncomplete = () => {
+        const ratio = 100 / volume;
+
+        console.log(`Computing ended with value ${ratio}`);
+        resolve(ratio);
+      };
+    });
+  }
+
   // METHODS
-  public async playAudio(filename: string): Promise<void> {
+  public async playAudio(button: SoundboardButton): Promise<void> {
     if (this.soundMode === SoundMode.OVERRIDE && this._audioContext) {
       await this._audioContext
         .close()
@@ -143,28 +211,42 @@ export class SoundboardService {
       this._audioContext = new AudioContext();
     }
 
-    if (!this.audioByButtonFilename[filename]) {
-      this.getMediaByFileName(filename)
+    const { fileName, gain } = button;
+
+    if (!this.audioByButtonfileName[fileName]) {
+      this.getMediaByfileName(fileName)
         .pipe(take(1))
         .subscribe(async (data: ArrayBuffer) => {
-          console.log(`Created audio for file ${filename}`);
-          this.audioByButtonFilename[filename] =
+          console.log(`Created audio for file ${fileName}`);
+
+          this.audioByButtonfileName[fileName] =
             await this._audioContext.decodeAudioData(data);
+
+          if (!button.gain) {
+            button.gain = await this.computeGain(
+              this.audioByButtonfileName[fileName],
+            );
+
+            this.updateButton(button).pipe(take(1)).subscribe();
+          }
+
           this._triggerPlay({
-            audioBuffer: this.audioByButtonFilename[filename],
-            filename,
+            audioBuffer: this.audioByButtonfileName[fileName],
+            fileName,
+            gain: button.gain,
           });
         });
     } else {
-      console.log(`Using cached audio for file ${filename}`);
+      console.log(`Using cached audio for file ${fileName}`);
       this._triggerPlay({
-        audioBuffer: this.audioByButtonFilename[filename],
-        filename,
+        audioBuffer: this.audioByButtonfileName[fileName],
+        fileName,
+        gain,
       });
     }
   }
 
-  private _triggerPlay(playlistElement: PlaylistElement): void {
+  private async _triggerPlay(playlistElement: PlaylistElement): Promise<void> {
     this._playlist.push(playlistElement);
 
     if (this.soundMode === SoundMode.QUEUE) {
@@ -178,12 +260,14 @@ export class SoundboardService {
     const source: AudioBufferSourceNode =
       this._audioContext.createBufferSource();
 
-    const audioNode = this._master(this._audioContext, source);
+    const gainNode = this._audioContext.createGain();
 
     source.buffer = playlistElement.audioBuffer;
-    source.connect(audioNode || this._audioContext.destination);
+    gainNode.connect(this._audioContext.destination);
+    gainNode.gain.value = this.master ? playlistElement.gain : 1;
+    source.connect(gainNode);
     source.start();
-    console.log(`Playing ${playlistElement.filename}`);
+    console.log(`Playing ${playlistElement.fileName}`);
 
     source.onended = () => {
       if (this.soundMode === SoundMode.LOOP) {
@@ -197,24 +281,5 @@ export class SoundboardService {
         this._playCachedAudio(this._playlist[0]);
       }
     };
-  }
-
-  private _master(
-    audioContext: AudioContext,
-    source: AudioBufferSourceNode,
-  ): AudioNode | null {
-    if (this.master) {
-      const gainNode = audioContext.createGain();
-      const compressorNode = audioContext.createDynamicsCompressor();
-
-      source.connect(gainNode);
-      gainNode.connect(compressorNode);
-      gainNode.gain.value = 30;
-      compressorNode.connect(audioContext.destination);
-
-      return compressorNode;
-    }
-
-    return null;
   }
 }

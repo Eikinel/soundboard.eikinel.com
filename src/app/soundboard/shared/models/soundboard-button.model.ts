@@ -7,6 +7,7 @@ export interface SoundboardButton {
   color: string;
   fileName: string;
   fileType: string;
+  gain: number;
   hide?: boolean;
 }
 

@@ -17,7 +17,9 @@
         <app-soundboard-button
           *ngIf="!button.hide"
           [button]="button"
-          [onClick]="this.soundboardService.playAudio.bind(soundboardService)"
+          [onClick]="
+            this.soundboardService.playAudio.bind(this.soundboardService)
+          "
           (onButtonEdited)="
             this.onButtonEvent(SoundboardButtonEvent.UPDATED, $event)
           "

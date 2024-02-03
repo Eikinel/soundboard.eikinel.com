@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { SoundboardButton } from "../shared/models/soundboard-button.model";
-import { SoundboardService } from "../soundboard.service";
-import { SoundMode } from "../shared/models/soundmode.enum";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ModalService } from "../../shared/services/modal.service";
-import { take } from "rxjs/operators";
-import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
 import { ModalOptions } from "ngx-bootstrap/modal";
+import { take } from "rxjs/operators";
+import { ModalService } from "../../shared/services/modal.service";
+import { ButtonFormModalComponent } from "../button-form-modal/button-form-modal.component";
+import { SoundboardButton } from "../shared/models/soundboard-button.model";
+import { SoundMode } from "../shared/models/soundmode.enum";
+import { SoundboardService } from "../soundboard.service";
 
 @Component({
   selector: "app-soundboard-button",
@@ -16,7 +16,7 @@ import { ModalOptions } from "ngx-bootstrap/modal";
 })
 export class SoundboardButtonComponent {
   @Input() button: SoundboardButton;
-  @Input() onClick: (...args: any[]) => any;
+  @Input() onClick: (button: SoundboardButton) => void;
   @Output() onButtonEdited: EventEmitter<SoundboardButton> =
     new EventEmitter<SoundboardButton>();
   @Output() onButtonDeleted: EventEmitter<SoundboardButton> =

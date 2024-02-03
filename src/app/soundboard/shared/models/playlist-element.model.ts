@@ -1,4 +1,5 @@
 export interface PlaylistElement {
   audioBuffer: AudioBuffer;
-  filename: string;
+  fileName: string;
+  gain: number;
 }

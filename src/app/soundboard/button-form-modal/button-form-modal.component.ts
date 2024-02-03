@@ -18,6 +18,7 @@ enum ButtonFormKeys {
   TAGS = "tags",
   COLOR = "color",
   FILE = "file",
+  GAIN = "gain",
 }
 
 @Component({
@@ -40,6 +41,7 @@ export class ButtonFormModalComponent implements OnInit {
   public categories: string[];
 
   private _fileToUpload: File;
+  private _gain: number;
 
   constructor(
     public readonly modalService: ModalService,
@@ -70,6 +72,7 @@ export class ButtonFormModalComponent implements OnInit {
         null,
         this.isCreation ? [Validators.required] : [],
       ),
+      [ButtonFormKeys.GAIN]: this.formBuilder.control(1),
     });
 
     this.soundboardService
@@ -81,8 +84,11 @@ export class ButtonFormModalComponent implements OnInit {
       );
   }
 
-  public onFileSelect(event: any): void {
+  public async onFileSelect(event: any): Promise<void> {
     this._fileToUpload = event.target.files.item(0) as File;
+    this.buttonFormGroup
+      .get(ButtonFormKeys.GAIN)
+      .setValue(await this.soundboardService.computeGain(this._fileToUpload));
   }
 
   public submit(): void {

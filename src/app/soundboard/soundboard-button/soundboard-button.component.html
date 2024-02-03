@@ -20,7 +20,7 @@
     <div
       class="button position-absolute"
       [ngClass]="[this.isPressed ? 'pressed' : 'normal']"
-      (mousedown)="this.isPressed = true; this.onClick(this.button.fileName)"
+      (mousedown)="this.isPressed = true; this.onClick(this.button)"
       (mouseup)="
         this.soundboardService.soundMode !== SoundMode.LOOP
           ? (this.isPressed = false)
