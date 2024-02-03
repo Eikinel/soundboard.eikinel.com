@@ -41,17 +41,8 @@ export class SoundboardComponent implements OnInit {
       .getAllButtons()
       .pipe(take(1))
       .subscribe((buttons: SoundboardButton[]) => {
-        let categories = buttons.map(({ category }) => category);
-
-        categories = categories.filter(
-          (category, i) => categories.findIndex((c) => c === category) === i,
-        );
-
-        this.categories = categories;
-        this.buttons = buttons.sort((a, b) =>
-          a.category?.localeCompare(b.category),
-        );
-
+        this.setCategories(buttons);
+        this.buttons = buttons;
         this.loading = false;
       });
   }
@@ -72,14 +63,19 @@ export class SoundboardComponent implements OnInit {
     button: SoundboardButton,
   ): void {
     this._soundboardEventListeners[event]?.(button);
+    this.setCategories(this.buttons);
   }
 
   public getVisibleCategories(): string[] {
-    return this.categories.map((category) => {
-      if (this.getButtonsByCategory(category).some((button) => !button.hide)) {
-        return category;
-      }
-    });
+    return this.categories
+      .map((category) => {
+        if (
+          this.getButtonsByCategory(category).some((button) => !button.hide)
+        ) {
+          return category;
+        }
+      })
+      .sort((a, b) => a.localeCompare(b));
   }
 
   public getButtonsByCategory(category: string): SoundboardButton[] {
@@ -105,6 +101,16 @@ export class SoundboardComponent implements OnInit {
     this.buttons = this.buttons.filter(
       (button: SoundboardButton) => button.id !== deletedButton.id,
     );
+  }
+
+  private setCategories(buttons: SoundboardButton[]): void {
+    let categories = buttons.map(({ category }) => category);
+
+    categories = categories.filter(
+      (category, i) => categories.findIndex((c) => c === category) === i,
+    );
+
+    this.categories = categories;
   }
 
   @HostListener("click", ["$event"])
